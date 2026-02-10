@@ -78,21 +78,19 @@ export function ComponentExample() {
 
 function CardExample() {
   return (
-    <Example title="Card" className="items-center justify-center">
+    <Example title="کارت" className="items-center justify-center">
       <Card className="relative w-full max-w-sm overflow-hidden pt-0">
         <div className="bg-primary absolute inset-0 z-30 aspect-video opacity-50 mix-blend-color" />
         <img
           src="https://images.unsplash.com/photo-1604076850742-4c7221f3101b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Photo by mymind on Unsplash"
-          title="Photo by mymind on Unsplash"
+          alt="عکس از mymind در Unsplash"
+          title="عکس از mymind در Unsplash"
           className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale"
         />
         <CardHeader>
-          <CardTitle>Observability Plus is replacing Monitoring</CardTitle>
+          <CardTitle>قابلیت مشاهده پیشرفته جایگزین نظارت می‌شود</CardTitle>
           <CardDescription>
-            Switch to the improved way to explore your data, with natural
-            language. Monitoring will no longer be available on the Pro plan in
-            November, 2025
+            به روش بهبود یافته برای کاوش داده‌های خود با زبان طبیعی بروید. نظارت دیگر در پلن Pro در نوامبر ۲۰۲۵ در دسترس نخواهد بود
           </CardDescription>
         </CardHeader>
         <CardFooter>
@@ -100,7 +98,7 @@ function CardExample() {
             <AlertDialogTrigger asChild>
               <Button>
                 <PlusIcon data-icon="inline-start" />
-                Show Dialog
+                نمایش دیالوگ
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent size="sm">
@@ -109,20 +107,19 @@ function CardExample() {
                   <BluetoothIcon
                   />
                 </AlertDialogMedia>
-                <AlertDialogTitle>Allow accessory to connect?</AlertDialogTitle>
+                <AlertDialogTitle>اجازه اتصال لوازم جانبی؟</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Do you want to allow the USB accessory to connect to this
-                  device?
+                  آیا می‌خواهید به لوازم جانبی USB اجازه اتصال به این دستگاه را بدهید؟
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Don&apos;t allow</AlertDialogCancel>
-                <AlertDialogAction>Allow</AlertDialogAction>
+                <AlertDialogCancel>اجازه نده</AlertDialogCancel>
+                <AlertDialogAction>اجازه بده</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
           <Badge variant="secondary" className="ms-auto">
-            Warning
+            هشدار
           </Badge>
         </CardFooter>
       </Card>
@@ -147,72 +144,72 @@ function FormExample() {
   const [theme, setTheme] = React.useState("light")
 
   return (
-    <Example title="Form">
+    <Example title="فرم">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>User Information</CardTitle>
-          <CardDescription>Please fill in your details below</CardDescription>
+          <CardTitle>اطلاعات کاربر</CardTitle>
+          <CardDescription>لطفا جزئیات خود را در زیر وارد کنید</CardDescription>
           <CardAction>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
                   <MoreVerticalIcon
                   />
-                  <span className="sr-only">More options</span>
+                  <span className="sr-only">گزینه‌های بیشتر</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>File</DropdownMenuLabel>
+                  <DropdownMenuLabel>فایل</DropdownMenuLabel>
                   <DropdownMenuItem>
                     <FileIcon
                     />
-                    New File
+                    فایل جدید
                     <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <FolderIcon
                     />
-                    New Folder
+                    پوشه جدید
                     <DropdownMenuShortcut>⇧⌘N</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                       <FolderOpenIcon
                       />
-                      Open Recent
+                      بازکردن اخیر
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent>
                         <DropdownMenuGroup>
-                          <DropdownMenuLabel>Recent Projects</DropdownMenuLabel>
+                          <DropdownMenuLabel>پروژه‌های اخیر</DropdownMenuLabel>
                           <DropdownMenuItem>
                             <FileCodeIcon
                             />
-                            Project Alpha
+                            پروژه آلفا
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <FileCodeIcon
                             />
-                            Project Beta
+                            پروژه بتا
                           </DropdownMenuItem>
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
                               <MoreHorizontalIcon
                               />
-                              More Projects
+                              پروژه‌های بیشتر
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
                                 <DropdownMenuItem>
                                   <FileCodeIcon
                                   />
-                                  Project Gamma
+                                  پروژه گاما
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                   <FileCodeIcon
                                   />
-                                  Project Delta
+                                  پروژه دلتا
                                 </DropdownMenuItem>
                               </DropdownMenuSubContent>
                             </DropdownMenuPortal>
@@ -223,7 +220,7 @@ function FormExample() {
                           <DropdownMenuItem>
                             <FolderSearchIcon
                             />
-                            Browse...
+                            مرور...
                           </DropdownMenuItem>
                         </DropdownMenuGroup>
                       </DropdownMenuSubContent>
@@ -233,19 +230,19 @@ function FormExample() {
                   <DropdownMenuItem>
                     <SaveIcon
                     />
-                    Save
+                    ذخیره
                     <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <DownloadIcon
                     />
-                    Export
+                    خروجی
                     <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>View</DropdownMenuLabel>
+                  <DropdownMenuLabel>نمایش</DropdownMenuLabel>
                   <DropdownMenuCheckboxItem
                     checked={notifications.email}
                     onCheckedChange={(checked) =>
@@ -257,7 +254,7 @@ function FormExample() {
                   >
                     <EyeIcon
                     />
-                    Show Sidebar
+                    نمایش نوار کناری
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={notifications.sms}
@@ -270,18 +267,18 @@ function FormExample() {
                   >
                     <LayoutIcon
                     />
-                    Show Status Bar
+                    نمایش نوار وضعیت
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                       <PaletteIcon
                       />
-                      Theme
+                      تم
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent>
                         <DropdownMenuGroup>
-                          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                          <DropdownMenuLabel>ظاهر</DropdownMenuLabel>
                           <DropdownMenuRadioGroup
                             value={theme}
                             onValueChange={setTheme}
@@ -289,17 +286,17 @@ function FormExample() {
                             <DropdownMenuRadioItem value="light">
                               <SunIcon
                               />
-                              Light
+                              روشن
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="dark">
                               <MoonIcon
                               />
-                              Dark
+                              تاریک
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="system">
                               <MonitorIcon
                               />
-                              System
+                              سیستم
                             </DropdownMenuRadioItem>
                           </DropdownMenuRadioGroup>
                         </DropdownMenuGroup>
@@ -309,49 +306,49 @@ function FormExample() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuLabel>حساب کاربری</DropdownMenuLabel>
                   <DropdownMenuItem>
                     <UserIcon
                     />
-                    Profile
+                    پروفایل
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <CreditCardIcon
                     />
-                    Billing
+                    صورتحساب
                   </DropdownMenuItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                       <SettingsIcon
                       />
-                      Settings
+                      تنظیمات
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent>
                         <DropdownMenuGroup>
-                          <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+                          <DropdownMenuLabel>ترجیحات</DropdownMenuLabel>
                           <DropdownMenuItem>
                             <KeyboardIcon
                             />
-                            Keyboard Shortcuts
+                            میانبرهای صفحه‌کلید
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <LanguagesIcon
                             />
-                            Language
+                            زبان
                           </DropdownMenuItem>
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
                               <BellIcon
                               />
-                              Notifications
+                              اعلان‌ها
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
                                 <DropdownMenuGroup>
                                   <DropdownMenuLabel>
-                                    Notification Types
+                                    انواع اعلان
                                   </DropdownMenuLabel>
                                   <DropdownMenuCheckboxItem
                                     checked={notifications.push}
@@ -364,7 +361,7 @@ function FormExample() {
                                   >
                                     <BellIcon
                                     />
-                                    Push Notifications
+                                    اعلان‌های فشاری
                                   </DropdownMenuCheckboxItem>
                                   <DropdownMenuCheckboxItem
                                     checked={notifications.email}
@@ -377,7 +374,7 @@ function FormExample() {
                                   >
                                     <MailIcon
                                     />
-                                    Email Notifications
+                                    اعلان‌های ایمیل
                                   </DropdownMenuCheckboxItem>
                                 </DropdownMenuGroup>
                               </DropdownMenuSubContent>
@@ -389,7 +386,7 @@ function FormExample() {
                           <DropdownMenuItem>
                             <ShieldIcon
                             />
-                            Privacy & Security
+                            حریم خصوصی و امنیت
                           </DropdownMenuItem>
                         </DropdownMenuGroup>
                       </DropdownMenuSubContent>
@@ -401,12 +398,12 @@ function FormExample() {
                   <DropdownMenuItem>
                     <HelpCircleIcon
                     />
-                    Help & Support
+                    راهنما و پشتیبانی
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <FileTextIcon
                     />
-                    Documentation
+                    مستندات
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -414,7 +411,7 @@ function FormExample() {
                   <DropdownMenuItem variant="destructive">
                     <LogOutIcon
                     />
-                    Sign Out
+                    خروج
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -427,25 +424,25 @@ function FormExample() {
             <FieldGroup>
               <div className="grid grid-cols-2 gap-4">
                 <Field>
-                  <FieldLabel htmlFor="small-form-name">Name</FieldLabel>
+                  <FieldLabel htmlFor="small-form-name">نام</FieldLabel>
                   <Input
                     id="small-form-name"
-                    placeholder="Enter your name"
+                    placeholder="نام خود را وارد کنید"
                     required
                   />
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="small-form-role">Role</FieldLabel>
+                  <FieldLabel htmlFor="small-form-role">نقش</FieldLabel>
                   <Select defaultValue="">
                     <SelectTrigger id="small-form-role">
-                      <SelectValue placeholder="Select a role" />
+                      <SelectValue placeholder="یک نقش انتخاب کنید" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="developer">Developer</SelectItem>
-                        <SelectItem value="designer">Designer</SelectItem>
-                        <SelectItem value="manager">Manager</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="developer">توسعه‌دهنده</SelectItem>
+                        <SelectItem value="designer">طراح</SelectItem>
+                        <SelectItem value="manager">مدیر</SelectItem>
+                        <SelectItem value="other">سایر</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -453,16 +450,16 @@ function FormExample() {
               </div>
               <Field>
                 <FieldLabel htmlFor="small-form-framework">
-                  Framework
+                  فریمورک
                 </FieldLabel>
                 <Combobox items={frameworks}>
                   <ComboboxInput
                     id="small-form-framework"
-                    placeholder="Select a framework"
+                    placeholder="یک فریمورک انتخاب کنید"
                     required
                   />
                   <ComboboxContent>
-                    <ComboboxEmpty>No frameworks found.</ComboboxEmpty>
+                    <ComboboxEmpty>فریمورکی پیدا نشد.</ComboboxEmpty>
                     <ComboboxList>
                       {(item) => (
                         <ComboboxItem key={item} value={item}>
@@ -474,16 +471,16 @@ function FormExample() {
                 </Combobox>
               </Field>
               <Field>
-                <FieldLabel htmlFor="small-form-comments">Comments</FieldLabel>
+                <FieldLabel htmlFor="small-form-comments">نظرات</FieldLabel>
                 <Textarea
                   id="small-form-comments"
-                  placeholder="Add any additional comments"
+                  placeholder="نظرات اضافی خود را وارد کنید"
                 />
               </Field>
               <Field orientation="horizontal">
-                <Button type="submit">Submit</Button>
+                <Button type="submit">ارسال</Button>
                 <Button variant="outline" type="button">
-                  Cancel
+                  لغو
                 </Button>
               </Field>
             </FieldGroup>
