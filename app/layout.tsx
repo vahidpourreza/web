@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 import { DirectionProvider } from "@/components/ui/direction";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { iranSansFaNum } from "@/lib/fonts";
@@ -23,7 +24,14 @@ export default function RootLayout({
     >
       <body className="antialiased">
         <DirectionProvider direction="rtl" dir="rtl">
-          <TooltipProvider>{children}</TooltipProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TooltipProvider>{children}</TooltipProvider>
+          </ThemeProvider>
         </DirectionProvider>
       </body>
     </html>
