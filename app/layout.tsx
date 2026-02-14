@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { DirectionProvider } from "@/components/ui/direction";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { iranSansFaNum } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ساخت اپلیکیشن Next",
-  description: "ساخته شده با create next app",
+  title: "SmartCUP",
+  description: "Cafe & restaurant management system",
 };
 
 export default function RootLayout({
@@ -14,10 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={iranSansFaNum.variable} suppressHydrationWarning>
+    <html
+      lang="fa"
+      dir="rtl"
+      className={iranSansFaNum.variable}
+      suppressHydrationWarning
+    >
       <body className="antialiased">
-        <DirectionProvider dir="rtl">
-          {children}
+        <DirectionProvider direction="rtl" dir="rtl">
+          <TooltipProvider>{children}</TooltipProvider>
         </DirectionProvider>
       </body>
     </html>
