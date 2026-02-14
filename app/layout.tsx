@@ -1,17 +1,7 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Arabic, Geist_Mono } from "next/font/google";
 import { DirectionProvider } from "@/components/ui/direction";
+import { iranSansFaNum } from "@/lib/fonts";
 import "./globals.css";
-
-const fontSans = Noto_Sans_Arabic({
-  subsets: ["arabic"],
-  variable: "--font-sans",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "ساخت اپلیکیشن Next",
@@ -24,10 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={fontSans.variable}>
-      <body
-        className={`${geistMono.variable} antialiased`}
-      >
+    <html lang="fa" dir="rtl" className={iranSansFaNum.variable}>
+      <body className="antialiased">
         <DirectionProvider dir="rtl">
           {children}
         </DirectionProvider>
