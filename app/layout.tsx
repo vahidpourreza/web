@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={iranSansFaNum.variable}>
+    <html lang="fa" dir="rtl" className={iranSansFaNum.variable} suppressHydrationWarning>
       <body className="antialiased">
         <DirectionProvider dir="rtl">
           {children}
