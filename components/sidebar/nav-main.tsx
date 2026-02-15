@@ -31,7 +31,7 @@ function NavSubItem({ item }: { item: NavMainItem }) {
       <SidebarMenuSubItem>
         <Collapsible defaultOpen={item.isActive}>
           <CollapsibleTrigger asChild>
-            <SidebarMenuSubButton>
+            <SidebarMenuSubButton className="cursor-pointer">
               {item.icon}
               <span>{item.title}</span>
               <ChevronLeftIcon className="ms-auto size-3 transition-transform duration-200 [[data-state=open]>&]:rotate-90" />
