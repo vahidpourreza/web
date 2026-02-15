@@ -6,7 +6,7 @@ import { iranSansFaNum } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SmartCUP",
+  title: "Smart CUP",
   description: "Cafe & restaurant management system",
 };
 
