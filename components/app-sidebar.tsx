@@ -1,20 +1,19 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavSecondary } from "@/components/nav-secondary"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+  SidebarRail,
+} from "@/components/ui/sidebar"
 import {
   TerminalSquareIcon,
   BotIcon,
@@ -26,7 +25,7 @@ import {
   PieChartIcon,
   MapIcon,
   Coffee,
-} from "lucide-react";
+} from "lucide-react"
 
 const data = {
   user: {
@@ -34,6 +33,13 @@ const data = {
     mobile: "09112223344",
     avatar: "/avatars/shadcn.png",
   },
+  teams: [
+    {
+      name: "اسمارت کاپ",
+      logo: <Coffee />,
+      plan: "نسخه بتا",
+    },
+  ],
   navMain: [
     {
       title: "محیط آزمایشی",
@@ -150,27 +156,13 @@ const data = {
       icon: <MapIcon />,
     },
   ],
-};
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Coffee className="size-4" />
-                </div>
-                <div className="grid flex-1 text-start text-sm leading-tight">
-                  <span className="truncate font-medium">اسمارت کاپ</span>
-                  <span className="truncate text-xs">نسخه بتا</span>
-                </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
@@ -180,6 +172,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
-  );
+  )
 }
