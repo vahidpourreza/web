@@ -17,19 +17,54 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronLeftIcon } from "lucide-react"
 
+export type NavMainItem = {
+  title: string
+  url: string
+  icon?: React.ReactNode
+  isActive?: boolean
+  items?: NavMainItem[]
+}
+
+function NavSubItem({ item }: { item: NavMainItem }) {
+  if (item.items?.length) {
+    return (
+      <SidebarMenuSubItem>
+        <Collapsible defaultOpen={item.isActive}>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuSubButton>
+              {item.icon}
+              <span>{item.title}</span>
+              <ChevronLeftIcon className="ms-auto size-3 transition-transform duration-200 [[data-state=open]>&]:rotate-90" />
+            </SidebarMenuSubButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {item.items.map((subItem) => (
+                <NavSubItem key={subItem.title} item={subItem} />
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </Collapsible>
+      </SidebarMenuSubItem>
+    )
+  }
+
+  return (
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton asChild>
+        <a href={item.url}>
+          {item.icon}
+          <span>{item.title}</span>
+        </a>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+  )
+}
+
 export function NavMain({
   items,
 }: {
-  items: {
-    title: string
-    url: string
-    icon?: React.ReactNode
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+  items: NavMainItem[]
 }) {
   return (
     <SidebarGroup>
@@ -53,13 +88,7 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
+                    <NavSubItem key={subItem.title} item={subItem} />
                   ))}
                 </SidebarMenuSub>
               </CollapsibleContent>

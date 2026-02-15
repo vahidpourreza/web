@@ -25,6 +25,22 @@ import {
   PieChartIcon,
   MapIcon,
   Coffee,
+  HistoryIcon,
+  StarIcon,
+  SettingsIcon,
+  SparklesIcon,
+  TelescopeIcon,
+  AtomIcon,
+  InfoIcon,
+  RocketIcon,
+  GraduationCapIcon,
+  FileTextIcon,
+  SlidersHorizontalIcon,
+  LanguagesIcon,
+  PaletteIcon,
+  UsersIcon,
+  CreditCardIcon,
+  GaugeIcon,
 } from "lucide-react"
 
 const data = {
@@ -50,14 +66,17 @@ const data = {
         {
           title: "تاریخچه",
           url: "#",
+          icon: <HistoryIcon />,
         },
         {
           title: "ستاره‌دار",
           url: "#",
+          icon: <StarIcon />,
         },
         {
           title: "تنظیمات",
           url: "#",
+          icon: <SettingsIcon />,
         },
       ],
     },
@@ -69,14 +88,17 @@ const data = {
         {
           title: "جنسیس",
           url: "#",
+          icon: <SparklesIcon />,
         },
         {
           title: "کاوشگر",
           url: "#",
+          icon: <TelescopeIcon />,
         },
         {
           title: "کوانتوم",
           url: "#",
+          icon: <AtomIcon />,
         },
       ],
     },
@@ -88,18 +110,22 @@ const data = {
         {
           title: "معرفی",
           url: "#",
+          icon: <InfoIcon />,
         },
         {
           title: "شروع کنید",
           url: "#",
+          icon: <RocketIcon />,
         },
         {
           title: "آموزش‌ها",
           url: "#",
+          icon: <GraduationCapIcon />,
         },
         {
           title: "تغییرات",
           url: "#",
+          icon: <FileTextIcon />,
         },
       ],
     },
@@ -111,18 +137,34 @@ const data = {
         {
           title: "عمومی",
           url: "#",
+          icon: <SlidersHorizontalIcon />,
+          items: [
+            {
+              title: "زبان",
+              url: "#",
+              icon: <LanguagesIcon />,
+            },
+            {
+              title: "ظاهر",
+              url: "#",
+              icon: <PaletteIcon />,
+            },
+          ],
         },
         {
           title: "تیم",
           url: "#",
+          icon: <UsersIcon />,
         },
         {
           title: "صورتحساب",
           url: "#",
+          icon: <CreditCardIcon />,
         },
         {
           title: "محدودیت‌ها",
           url: "#",
+          icon: <GaugeIcon />,
         },
       ],
     },
