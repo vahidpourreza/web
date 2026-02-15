@@ -66,22 +66,22 @@ const data = {
       items: [
         {
           title: "مراکز",
-          url: "/centers",
+          url: "/access/centers",
           icon: <BuildingIcon />,
         },
         {
           title: "گروه‌های دسترسی",
-          url: "/access-groups",
+          url: "/access/access-groups",
           icon: <ShieldCheckIcon />,
         },
         {
           title: "کاربران",
-          url: "/users",
+          url: "/access/users",
           icon: <UserIcon />,
         },
         {
           title: "دعوت‌نامه‌ها",
-          url: "/invitations",
+          url: "/access/invitations",
           icon: <MailPlusIcon />,
         },
       ],
