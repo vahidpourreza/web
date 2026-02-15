@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-npm install next-auth@beta axios
+pnpm add next-auth@beta axios
 ```
 
 ## Create file: `.env.local`
@@ -32,7 +32,7 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 Generate AUTH_SECRET:
 
 ```bash
-npx auth secret
+pnpm dlx auth secret
 ```
 
 ## Create file: `.env.example`
