@@ -11,7 +11,7 @@ npm install next-auth@beta axios
 ```env
 # Auth - Duende Identity Server
 AUTH_DUENDE_IDS_ISSUER=https://localhost:5001
-AUTH_DUENDE_IDS_CLIENT_ID=smartcup-web
+AUTH_DUENDE_IDS_CLIENT_ID=web
 AUTH_DUENDE_IDS_CLIENT_SECRET=YOUR_SECRET_HERE
 
 # Auth.js
@@ -40,7 +40,7 @@ npx auth secret
 ```env
 # Auth - Duende Identity Server
 AUTH_DUENDE_IDS_ISSUER=https://localhost:5001
-AUTH_DUENDE_IDS_CLIENT_ID=smartcup-web
+AUTH_DUENDE_IDS_CLIENT_ID=web
 AUTH_DUENDE_IDS_CLIENT_SECRET=
 
 # Auth.js

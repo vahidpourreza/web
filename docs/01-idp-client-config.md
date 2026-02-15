@@ -6,8 +6,8 @@ Add this client via your Identity Server Admin UI.
 
 | Field | Value |
 | --- | --- |
-| ClientId | `smartcup-web` |
-| ClientName | `پنل مدیریتی وب` |
+| ClientId | `web` |
+| ClientName | `اپلیکیشن وب` |
 | Client Secret | Generate a strong secret, save it for `.env.local` |
 | Allowed Grant Types | Authorization Code |
 | Require PKCE | true |
@@ -26,7 +26,7 @@ Add this client via your Identity Server Admin UI.
 
 ## Scopes
 
-`openid`, `profile`, `email`, `MahtaUserInfo`, `api.read`, `api.write`, `offline_access`
+`openid`, `profile`, `email`, `MahtaUserInfo`, `offline_access`
 
 ## Token Settings
 

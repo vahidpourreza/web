@@ -89,7 +89,7 @@ const config: NextAuthConfig = {
       clientSecret: env.auth.clientSecret,
       authorization: {
         params: {
-          scope: "openid profile email MahtaUserInfo api.read api.write offline_access",
+          scope: "openid profile email MahtaUserInfo offline_access",
           response_type: "code",
         },
       },
