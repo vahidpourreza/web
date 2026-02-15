@@ -1,40 +1,50 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useTheme } from "next-themes"
+import { SunIcon, MoonIcon, MonitorIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">تغییر تم</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          حالت روشن
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          حالت تیره
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          سیستم
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+    <div className="bg-muted flex items-center gap-1 rounded-full p-1">
+      <button
+        onClick={() => setTheme("light")}
+        className={cn(
+          "cursor-pointer rounded-full p-1.5 transition-colors",
+          theme === "light"
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+        aria-label="حالت روشن"
+      >
+        <SunIcon className="size-4" />
+      </button>
+      <button
+        onClick={() => setTheme("system")}
+        className={cn(
+          "cursor-pointer rounded-full p-1.5 transition-colors",
+          theme === "system"
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+        aria-label="سیستم"
+      >
+        <MonitorIcon className="size-4" />
+      </button>
+      <button
+        onClick={() => setTheme("dark")}
+        className={cn(
+          "cursor-pointer rounded-full p-1.5 transition-colors",
+          theme === "dark"
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+        aria-label="حالت تیره"
+      >
+        <MoonIcon className="size-4" />
+      </button>
+    </div>
+  )
 }
