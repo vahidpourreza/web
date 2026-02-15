@@ -1,3 +1,6 @@
-// import type { DefaultSession } from "next-auth";
+import type { DefaultSession } from 'next-auth';
 
-// export interface MahtaUserCliams {}
+// Claims from MahtaUserInfo Scope
+export interface MahtaUserCliams {
+  user_id: string;
+}
