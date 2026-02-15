@@ -1,11 +1,15 @@
 "use client"
 
+import { useSyncExternalStore } from "react"
 import { useTheme } from "next-themes"
 import { SunIcon, MoonIcon, MonitorIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+const emptySubscribe = () => () => {}
+
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
 
   return (
     <div className="bg-muted flex items-center gap-1 rounded-full p-1">
@@ -13,7 +17,7 @@ export function ModeToggle() {
         onClick={() => setTheme("light")}
         className={cn(
           "cursor-pointer rounded-full p-1.5 transition-colors",
-          theme === "light"
+          mounted && theme === "light"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
         )}
@@ -25,7 +29,7 @@ export function ModeToggle() {
         onClick={() => setTheme("system")}
         className={cn(
           "cursor-pointer rounded-full p-1.5 transition-colors",
-          theme === "system"
+          mounted && theme === "system"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
         )}
@@ -37,7 +41,7 @@ export function ModeToggle() {
         onClick={() => setTheme("dark")}
         className={cn(
           "cursor-pointer rounded-full p-1.5 transition-colors",
-          theme === "dark"
+          mounted && theme === "dark"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
         )}

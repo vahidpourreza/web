@@ -41,6 +41,7 @@ import {
   UsersIcon,
   CreditCardIcon,
   GaugeIcon,
+  LayoutDashboardIcon,
 } from "lucide-react"
 
 const data = {
@@ -57,6 +58,11 @@ const data = {
     },
   ],
   navMain: [
+    {
+      title: "داشبورد",
+      url: "/",
+      icon: <LayoutDashboardIcon />,
+    },
     {
       title: "محیط آزمایشی",
       url: "#",
