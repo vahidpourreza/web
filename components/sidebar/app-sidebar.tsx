@@ -3,8 +3,8 @@
 import * as React from "react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
-import { NavProjects } from "@/components/sidebar/nav-projects"
-import { NavSecondary } from "@/components/sidebar/nav-secondary"
+// import { NavProjects } from "@/components/sidebar/nav-projects"
+// import { NavSecondary } from "@/components/sidebar/nav-secondary"
 import { NavUser } from "@/components/sidebar/nav-user"
 import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
@@ -15,26 +15,26 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
-  TerminalSquareIcon,
-  BotIcon,
-  BookOpenIcon,
+  // TerminalSquareIcon,
+  // BotIcon,
+  // BookOpenIcon,
   Settings2Icon,
-  LifeBuoyIcon,
-  SendIcon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
+  // LifeBuoyIcon,
+  // SendIcon,
+  // FrameIcon,
+  // PieChartIcon,
+  // MapIcon,
   Coffee,
-  HistoryIcon,
-  StarIcon,
-  SettingsIcon,
-  SparklesIcon,
-  TelescopeIcon,
-  AtomIcon,
-  InfoIcon,
-  RocketIcon,
-  GraduationCapIcon,
-  FileTextIcon,
+  // HistoryIcon,
+  // StarIcon,
+  // SettingsIcon,
+  // SparklesIcon,
+  // TelescopeIcon,
+  // AtomIcon,
+  // InfoIcon,
+  // RocketIcon,
+  // GraduationCapIcon,
+  // FileTextIcon,
   SlidersHorizontalIcon,
   LanguagesIcon,
   PaletteIcon,
@@ -63,78 +63,78 @@ const data = {
       url: "/",
       icon: <LayoutDashboardIcon />,
     },
-    {
-      title: "محیط آزمایشی",
-      url: "#",
-      icon: <TerminalSquareIcon />,
-      isActive: true,
-      items: [
-        {
-          title: "تاریخچه",
-          url: "#",
-          icon: <HistoryIcon />,
-        },
-        {
-          title: "ستاره‌دار",
-          url: "#",
-          icon: <StarIcon />,
-        },
-        {
-          title: "تنظیمات",
-          url: "#",
-          icon: <SettingsIcon />,
-        },
-      ],
-    },
-    {
-      title: "مدل‌ها",
-      url: "#",
-      icon: <BotIcon />,
-      items: [
-        {
-          title: "جنسیس",
-          url: "#",
-          icon: <SparklesIcon />,
-        },
-        {
-          title: "کاوشگر",
-          url: "#",
-          icon: <TelescopeIcon />,
-        },
-        {
-          title: "کوانتوم",
-          url: "#",
-          icon: <AtomIcon />,
-        },
-      ],
-    },
-    {
-      title: "مستندات",
-      url: "#",
-      icon: <BookOpenIcon />,
-      items: [
-        {
-          title: "معرفی",
-          url: "#",
-          icon: <InfoIcon />,
-        },
-        {
-          title: "شروع کنید",
-          url: "#",
-          icon: <RocketIcon />,
-        },
-        {
-          title: "آموزش‌ها",
-          url: "#",
-          icon: <GraduationCapIcon />,
-        },
-        {
-          title: "تغییرات",
-          url: "#",
-          icon: <FileTextIcon />,
-        },
-      ],
-    },
+    // {
+    //   title: "محیط آزمایشی",
+    //   url: "#",
+    //   icon: <TerminalSquareIcon />,
+    //   isActive: true,
+    //   items: [
+    //     {
+    //       title: "تاریخچه",
+    //       url: "#",
+    //       icon: <HistoryIcon />,
+    //     },
+    //     {
+    //       title: "ستاره‌دار",
+    //       url: "#",
+    //       icon: <StarIcon />,
+    //     },
+    //     {
+    //       title: "تنظیمات",
+    //       url: "#",
+    //       icon: <SettingsIcon />,
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "مدل‌ها",
+    //   url: "#",
+    //   icon: <BotIcon />,
+    //   items: [
+    //     {
+    //       title: "جنسیس",
+    //       url: "#",
+    //       icon: <SparklesIcon />,
+    //     },
+    //     {
+    //       title: "کاوشگر",
+    //       url: "#",
+    //       icon: <TelescopeIcon />,
+    //     },
+    //     {
+    //       title: "کوانتوم",
+    //       url: "#",
+    //       icon: <AtomIcon />,
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "مستندات",
+    //   url: "#",
+    //   icon: <BookOpenIcon />,
+    //   items: [
+    //     {
+    //       title: "معرفی",
+    //       url: "#",
+    //       icon: <InfoIcon />,
+    //     },
+    //     {
+    //       title: "شروع کنید",
+    //       url: "#",
+    //       icon: <RocketIcon />,
+    //     },
+    //     {
+    //       title: "آموزش‌ها",
+    //       url: "#",
+    //       icon: <GraduationCapIcon />,
+    //     },
+    //     {
+    //       title: "تغییرات",
+    //       url: "#",
+    //       icon: <FileTextIcon />,
+    //     },
+    //   ],
+    // },
     {
       title: "تنظیمات",
       url: "#",
@@ -175,35 +175,35 @@ const data = {
       ],
     },
   ],
-  navSecondary: [
-    {
-      title: "پشتیبانی",
-      url: "#",
-      icon: <LifeBuoyIcon />,
-    },
-    {
-      title: "بازخورد",
-      url: "#",
-      icon: <SendIcon />,
-    },
-  ],
-  projects: [
-    {
-      name: "مهندسی طراحی",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "فروش و بازاریابی",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "سفر",
-      url: "#",
-      icon: <MapIcon />,
-    },
-  ],
+  // navSecondary: [
+  //   {
+  //     title: "پشتیبانی",
+  //     url: "#",
+  //     icon: <LifeBuoyIcon />,
+  //   },
+  //   {
+  //     title: "بازخورد",
+  //     url: "#",
+  //     icon: <SendIcon />,
+  //   },
+  // ],
+  // projects: [
+  //   {
+  //     name: "مهندسی طراحی",
+  //     url: "#",
+  //     icon: <FrameIcon />,
+  //   },
+  //   {
+  //     name: "فروش و بازاریابی",
+  //     url: "#",
+  //     icon: <PieChartIcon />,
+  //   },
+  //   {
+  //     name: "سفر",
+  //     url: "#",
+  //     icon: <MapIcon />,
+  //   },
+  // ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -214,8 +214,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavProjects projects={data.projects} /> */}
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
