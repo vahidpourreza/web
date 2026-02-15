@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { ShieldCheckIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "گروه‌های دسترسی",
+};
 
 export default function AccessGroupsPage() {
   return (

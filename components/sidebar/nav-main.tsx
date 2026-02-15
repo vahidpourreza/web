@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   Collapsible,
   CollapsibleContent,
@@ -7,7 +9,6 @@ import {
 } from "@/components/ui/collapsible"
 import {
   SidebarGroup,
-  // SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -21,15 +22,24 @@ export type NavMainItem = {
   title: string
   url: string
   icon?: React.ReactNode
-  isActive?: boolean
   items?: NavMainItem[]
 }
 
-function NavSubItem({ item }: { item: NavMainItem }) {
+function isItemOrChildActive(item: NavMainItem, pathname: string): boolean {
+  if (item.url !== "#" && pathname === item.url) return true
+  if (item.items?.length) {
+    return item.items.some((child) => isItemOrChildActive(child, pathname))
+  }
+  return false
+}
+
+function NavSubItem({ item, pathname }: { item: NavMainItem; pathname: string }) {
+  const active = isItemOrChildActive(item, pathname)
+
   if (item.items?.length) {
     return (
       <SidebarMenuSubItem>
-        <Collapsible defaultOpen={item.isActive}>
+        <Collapsible defaultOpen={active}>
           <CollapsibleTrigger asChild>
             <SidebarMenuSubButton className="cursor-pointer">
               {item.icon}
@@ -40,7 +50,7 @@ function NavSubItem({ item }: { item: NavMainItem }) {
           <CollapsibleContent>
             <SidebarMenuSub>
               {item.items.map((subItem) => (
-                <NavSubItem key={subItem.title} item={subItem} />
+                <NavSubItem key={subItem.title} item={subItem} pathname={pathname} />
               ))}
             </SidebarMenuSub>
           </CollapsibleContent>
@@ -51,11 +61,11 @@ function NavSubItem({ item }: { item: NavMainItem }) {
 
   return (
     <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild>
-        <a href={item.url}>
+      <SidebarMenuSubButton asChild isActive={pathname === item.url}>
+        <Link href={item.url}>
           {item.icon}
           <span>{item.title}</span>
-        </a>
+        </Link>
       </SidebarMenuSubButton>
     </SidebarMenuSubItem>
   )
@@ -66,16 +76,19 @@ export function NavMain({
 }: {
   items: NavMainItem[]
 }) {
+  const pathname = usePathname()
+
   return (
     <SidebarGroup>
-      {/* <SidebarGroupLabel>پلتفرم</SidebarGroupLabel> */}
       <SidebarMenu>
-        {items.map((item) =>
-          item.items?.length ? (
+        {items.map((item) => {
+          const active = isItemOrChildActive(item, pathname)
+
+          return item.items?.length ? (
             <Collapsible
               key={item.title}
               asChild
-              defaultOpen={item.isActive}
+              defaultOpen={active}
               className="group/collapsible"
             >
               <SidebarMenuItem>
@@ -89,7 +102,7 @@ export function NavMain({
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
-                      <NavSubItem key={subItem.title} item={subItem} />
+                      <NavSubItem key={subItem.title} item={subItem} pathname={pathname} />
                     ))}
                   </SidebarMenuSub>
                 </CollapsibleContent>
@@ -97,15 +110,15 @@ export function NavMain({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} asChild>
-                <a href={item.url}>
+              <SidebarMenuButton tooltip={item.title} isActive={pathname === item.url} asChild>
+                <Link href={item.url}>
                   {item.icon}
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           )
-        )}
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )

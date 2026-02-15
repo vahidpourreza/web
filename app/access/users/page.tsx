@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { UserIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "کاربران",
+};
 
 export default function UsersPage() {
   return (

@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "داشبورد",
+};
+
 export default function Page() {
   return (
     <>

@@ -3,14 +3,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { DirectionProvider } from "@/components/ui/direction";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { DynamicBreadcrumb } from "@/components/sidebar/dynamic-breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -22,7 +15,10 @@ import { iranSansFaNum } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Smart Cup",
+  title: {
+    default: "Smart Cup",
+    template: "%s | Smart Cup",
+  },
   description: "Cafe & restaurant management system",
 };
 
@@ -57,19 +53,7 @@ export default function RootLayout({
                         orientation="vertical"
                         className="me-2 data-vertical:h-4 data-vertical:self-auto"
                       />
-                      <Breadcrumb>
-                        <BreadcrumbList>
-                          <BreadcrumbItem className="hidden md:block">
-                            <BreadcrumbLink href="#">
-                              برنامه خود را بسازید
-                            </BreadcrumbLink>
-                          </BreadcrumbItem>
-                          <BreadcrumbSeparator className="hidden md:block" />
-                          <BreadcrumbItem>
-                            <BreadcrumbPage>واکشی داده</BreadcrumbPage>
-                          </BreadcrumbItem>
-                        </BreadcrumbList>
-                      </Breadcrumb>
+                      <DynamicBreadcrumb />
                     </div>
                     <div className="ms-auto me-4">
                       <ModeToggle />

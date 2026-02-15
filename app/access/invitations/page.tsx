@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { MailPlusIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "دعوت‌نامه‌ها",
+};
 
 export default function InvitationsPage() {
   return (

@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { BuildingIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "مراکز",
+};
 
 export default function CentersPage() {
   return (
