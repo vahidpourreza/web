@@ -15,33 +15,29 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
-  // TerminalSquareIcon,
-  // BotIcon,
-  // BookOpenIcon,
-  Settings2Icon,
-  // LifeBuoyIcon,
-  // SendIcon,
-  // FrameIcon,
-  // PieChartIcon,
-  // MapIcon,
   Coffee,
-  // HistoryIcon,
-  // StarIcon,
-  // SettingsIcon,
-  // SparklesIcon,
-  // TelescopeIcon,
-  // AtomIcon,
-  // InfoIcon,
-  // RocketIcon,
-  // GraduationCapIcon,
-  // FileTextIcon,
-  SlidersHorizontalIcon,
-  LanguagesIcon,
-  PaletteIcon,
-  UsersIcon,
-  CreditCardIcon,
-  GaugeIcon,
   LayoutDashboardIcon,
+  UsersIcon,
+  BuildingIcon,
+  ShieldCheckIcon,
+  UserIcon,
+  MailPlusIcon,
+  ShoppingBagIcon,
+  DatabaseIcon,
+  UtensilsCrossedIcon,
+  GroupIcon,
+  TagsIcon,
+  ClipboardListIcon,
+  MonitorIcon,
+  ReceiptTextIcon,
+  WalletIcon,
+  Settings2Icon,
+  CloudIcon,
+  NetworkIcon,
+  SendIcon,
+  CalendarClockIcon,
+  ShoppingCartIcon,
+  FolderOpenIcon,
 } from "lucide-react"
 
 const data = {
@@ -63,114 +59,124 @@ const data = {
       url: "/",
       icon: <LayoutDashboardIcon />,
     },
-    // {
-    //   title: "محیط آزمایشی",
-    //   url: "#",
-    //   icon: <TerminalSquareIcon />,
-    //   isActive: true,
-    //   items: [
-    //     {
-    //       title: "تاریخچه",
-    //       url: "#",
-    //       icon: <HistoryIcon />,
-    //     },
-    //     {
-    //       title: "ستاره‌دار",
-    //       url: "#",
-    //       icon: <StarIcon />,
-    //     },
-    //     {
-    //       title: "تنظیمات",
-    //       url: "#",
-    //       icon: <SettingsIcon />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "مدل‌ها",
-    //   url: "#",
-    //   icon: <BotIcon />,
-    //   items: [
-    //     {
-    //       title: "جنسیس",
-    //       url: "#",
-    //       icon: <SparklesIcon />,
-    //     },
-    //     {
-    //       title: "کاوشگر",
-    //       url: "#",
-    //       icon: <TelescopeIcon />,
-    //     },
-    //     {
-    //       title: "کوانتوم",
-    //       url: "#",
-    //       icon: <AtomIcon />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "مستندات",
-    //   url: "#",
-    //   icon: <BookOpenIcon />,
-    //   items: [
-    //     {
-    //       title: "معرفی",
-    //       url: "#",
-    //       icon: <InfoIcon />,
-    //     },
-    //     {
-    //       title: "شروع کنید",
-    //       url: "#",
-    //       icon: <RocketIcon />,
-    //     },
-    //     {
-    //       title: "آموزش‌ها",
-    //       url: "#",
-    //       icon: <GraduationCapIcon />,
-    //     },
-    //     {
-    //       title: "تغییرات",
-    //       url: "#",
-    //       icon: <FileTextIcon />,
-    //     },
-    //   ],
-    // },
+    {
+      title: "کاربران و دسترسی‌ها",
+      url: "#",
+      icon: <UsersIcon />,
+      items: [
+        {
+          title: "مراکز",
+          url: "/centers",
+          icon: <BuildingIcon />,
+        },
+        {
+          title: "گروه‌های دسترسی",
+          url: "/access-groups",
+          icon: <ShieldCheckIcon />,
+        },
+        {
+          title: "کاربران",
+          url: "/users",
+          icon: <UserIcon />,
+        },
+        {
+          title: "دعوت‌نامه‌ها",
+          url: "/invitations",
+          icon: <MailPlusIcon />,
+        },
+      ],
+    },
+    {
+      title: "فروش",
+      url: "#",
+      icon: <ShoppingBagIcon />,
+      items: [
+        {
+          title: "اطلاعات پایه",
+          url: "#",
+          icon: <DatabaseIcon />,
+          items: [
+            {
+              title: "آیتم منو",
+              url: "/sales/menu-items",
+              icon: <UtensilsCrossedIcon />,
+            },
+            {
+              title: "گروه‌بندی",
+              url: "/sales/groups",
+              icon: <GroupIcon />,
+            },
+            {
+              title: "دسته‌بندی",
+              url: "/sales/categories",
+              icon: <TagsIcon />,
+            },
+          ],
+        },
+        {
+          title: "عملیات‌ها",
+          url: "#",
+          icon: <ClipboardListIcon />,
+          items: [
+            {
+              title: "صندوق فروش",
+              url: "/sales/pos",
+              icon: <MonitorIcon />,
+            },
+            {
+              title: "سفارشات",
+              url: "/sales/orders",
+              icon: <ReceiptTextIcon />,
+            },
+            {
+              title: "مدیریت صندوق",
+              url: "/sales/cash-management",
+              icon: <WalletIcon />,
+            },
+          ],
+        },
+      ],
+    },
     {
       title: "تنظیمات",
       url: "#",
       icon: <Settings2Icon />,
       items: [
         {
-          title: "عمومی",
+          title: "کلاینت‌ها",
           url: "#",
-          icon: <SlidersHorizontalIcon />,
+          icon: <CloudIcon />,
           items: [
             {
-              title: "زبان",
-              url: "#",
-              icon: <LanguagesIcon />,
-            },
-            {
-              title: "ظاهر",
-              url: "#",
-              icon: <PaletteIcon />,
+              title: "کلاینت و دستگاه‌ها",
+              url: "/settings/clients/clients",
+              icon: <NetworkIcon />,
             },
           ],
         },
         {
-          title: "تیم",
+          title: "پیام‌رسانی",
           url: "#",
-          icon: <UsersIcon />,
+          icon: <SendIcon />,
+          items: [
+            {
+              title: "رخدادها",
+              url: "/settings/messaging/events",
+              icon: <CalendarClockIcon />,
+            },
+          ],
         },
         {
-          title: "صورتحساب",
+          title: "فروش",
           url: "#",
-          icon: <CreditCardIcon />,
-        },
-        {
-          title: "محدودیت‌ها",
-          url: "#",
-          icon: <GaugeIcon />,
+          icon: <ShoppingCartIcon />,
+          items: [
+            {
+              title: "کیوسک و نوبت",
+              url: "/settings/order/tenant-setting",
+              icon: <FolderOpenIcon />,
+            },
+          ],
         },
       ],
     },
