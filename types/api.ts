@@ -1,21 +1,5 @@
-//todo fix the props
-
 export interface ApiResponse<T> {
-  date: T;
-  success: boolean;
-  message?: string;
-}
-
-export interface ApiError {
+  data: T | null;
   status: number;
-  message: string;
-  errors?: Record<string, string[]>;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  totalCount: string;
-  pageNumber: number;
-  pageSize: number;
-  TotalPages: number;
+  messages: string[];
 }

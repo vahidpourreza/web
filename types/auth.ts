@@ -1,6 +1,5 @@
+import 'next-auth/jwt';
 import type { DefaultSession } from 'next-auth';
-
-//todo fix the errors.
 
 // Claims from MahtaUserInfo Scope
 export interface MahtaUserCliams {
@@ -9,6 +8,7 @@ export interface MahtaUserCliams {
   family: string;
   mobile: string;
   email: string;
+  role: string;
   tenant_name: string;
   tenant_id: string;
   broker_name: string;
@@ -22,7 +22,6 @@ declare module 'next-auth' {
     error?: 'RefreshTokenError';
     user: MahtaUserCliams & DefaultSession['user'];
   }
-  interface User extends MahtaUserCliams {}
 }
 
 declare module 'next-auth/jwt' {
