@@ -1,48 +1,26 @@
 # Step 08: HTTP Client (Axios)
 
-## Create file: `lib/api/endpoints.ts`
+## Folder structure
 
-```ts
-export const API = {
-  access: {
-    users: "/api/Access/users",
-    centers: "/api/Access/centers",
-    accessGroups: "/api/Access/access-groups",
-    invitations: "/api/Access/invitations",
-  },
-  order: {
-    menuItems: "/api/Order/menu-items",
-    groups: "/api/Order/groups",
-    categories: "/api/Order/categories",
-    pos: "/api/Order/pos",
-    orders: "/api/Order/orders",
-    cashManagement: "/api/Order/cash-management",
-  },
-  payment: {
-    base: "/api/payment",
-  },
-  messaging: {
-    events: "/api/Messaging/events",
-  },
-  file: {
-    upload: "/api/file/upload",
-    base: "/api/file",
-  },
-  cdn: {
-    base: "/cdn",
-  },
-  accounting: {
-    base: "/accounting",
-  },
-} as const;
+```
+api/
+  client.ts              # Axios instance + helper functions
+  index.ts               # Central barrel — single import point
+  services/
+    access/
+      access-group.ts    # (create later, per feature)
+      user.ts
+    order/
+      menu-item.ts
+    ...
 ```
 
-## Create file: `lib/api/client.ts`
+## Create file: `api/client.ts`
 
 ```ts
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { getSession } from "next-auth/react";
-import type { ApiError } from "@/types/api";
+import type { ApiResponse } from "@/types/api";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_GATEWAY_URL,
@@ -69,9 +47,8 @@ apiClient.interceptors.request.use(
 // Handle errors globally
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
+  (error: AxiosError<ApiResponse<unknown>>) => {
     if (error.response?.status === 401) {
-      // Token expired and refresh failed - redirect to login
       if (typeof window !== "undefined") {
         window.location.href = "/login";
       }
@@ -81,50 +58,85 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Typed helper functions
+// Typed helper functions — all return ApiResponse<T>
 export async function apiGet<T>(url: string, params?: Record<string, unknown>) {
-  const response = await apiClient.get<T>(url, { params });
+  const response = await apiClient.get<ApiResponse<T>>(url, { params });
   return response.data;
 }
 
 export async function apiPost<T>(url: string, data?: unknown) {
-  const response = await apiClient.post<T>(url, data);
+  const response = await apiClient.post<ApiResponse<T>>(url, data);
   return response.data;
 }
 
 export async function apiPut<T>(url: string, data?: unknown) {
-  const response = await apiClient.put<T>(url, data);
+  const response = await apiClient.put<ApiResponse<T>>(url, data);
   return response.data;
 }
 
 export async function apiDelete<T>(url: string) {
-  const response = await apiClient.delete<T>(url);
+  const response = await apiClient.delete<ApiResponse<T>>(url);
   return response.data;
 }
 
 export default apiClient;
 ```
 
-## Usage example
+## Create file: `api/index.ts`
+
+Start empty, add exports as you build each service:
 
 ```ts
-import { apiGet, apiPost } from "@/lib/api/client";
-import { API } from "@/lib/api/endpoints";
-import type { PaginatedResponse } from "@/types/api";
+// Add service exports here as you create them:
+// export { accessGroupService } from "./services/access/access-group";
+// export { userService } from "./services/access/user";
+```
 
-// GET list of users
-interface User {
+## Example service file (create later when building the page)
+
+`api/services/access/access-group.ts`:
+
+```ts
+import { apiGet, apiPost, apiPut, apiDelete } from "@/api/client";
+
+// --- Types ---
+export interface CreateAccessGroupRequest {
+  name: string;
+  navigationIds: string[];
+}
+
+export interface AccessGroupSummary {
   id: string;
   name: string;
+  isProtected: boolean;
 }
-const users = await apiGet<PaginatedResponse<User>>(API.access.users, {
-  pageNumber: 1,
-  pageSize: 10,
-});
 
-// POST create a user
-const newUser = await apiPost(API.access.users, {
-  name: "وحید",
-  mobile: "09112223344",
-});
+// --- Service ---
+const BASE = "/api/Access/v1/AccessGroup";
+
+export const accessGroupService = {
+  create: (data: CreateAccessGroupRequest) =>
+    apiPost<string>(`${BASE}/Create`, data),
+
+  getAllSummary: () =>
+    apiGet<AccessGroupSummary[]>(`${BASE}/GetAllSummary`),
+
+  update: (data: CreateAccessGroupRequest & { id: string }) =>
+    apiPut<void>(`${BASE}/Update`, data),
+
+  delete: (id: string) =>
+    apiDelete<void>(`${BASE}/Delete/${id}`),
+};
+```
+
+Then add to `api/index.ts`:
+```ts
+export { accessGroupService } from "./services/access/access-group";
+```
+
+Usage:
+```ts
+import { accessGroupService } from "@/api";
+
+const result = await accessGroupService.create({ name: "ادمین", navigationIds: [] });
 ```

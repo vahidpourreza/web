@@ -1,5 +1,43 @@
 # Step 10: Wire Up UI Components
 
+## First: Add a public env var for IDP issuer
+
+The logout function runs client-side, so it needs a `NEXT_PUBLIC_` prefixed env var to access the IDP URL in the browser.
+
+Add to `.env.local`:
+
+```env
+NEXT_PUBLIC_AUTH_ISSUER=https://localhost:5001
+```
+
+Add to `.env.example`:
+
+```env
+NEXT_PUBLIC_AUTH_ISSUER=https://localhost:5001
+```
+
+Add to `config/env.ts`:
+
+```ts
+const env = {
+  auth: {
+    issuer: process.env.AUTH_DUENDE_IDS_ISSUER!,
+    clientId: process.env.AUTH_DUENDE_IDS_CLIENT_ID!,
+    clientSecret: process.env.AUTH_DUENDE_IDS_CLIENT_SECRET!,
+    secret: process.env.AUTH_SECRET!,
+    publicIssuer: process.env.NEXT_PUBLIC_AUTH_ISSUER!,  // <-- add this
+  },
+  gateway: {
+    url: process.env.NEXT_PUBLIC_GATEWAY_URL!,
+  },
+  app: {
+    url: process.env.NEXT_PUBLIC_APP_URL!,
+  },
+} as const;
+
+export default env;
+```
+
 ## Modify file: `components/sidebar/nav-user.tsx`
 
 Replace the entire file:
@@ -38,12 +76,12 @@ import {
   LogOutIcon,
   LoaderIcon,
 } from "lucide-react"
-import env from "@/config/env"
 
 function handleLogout() {
-  // Sign out from Auth.js, then redirect to IDP end-session
+  const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
   signOut({
-    redirectTo: `${env.auth.issuer}/connect/endsession?post_logout_redirect_uri=${encodeURIComponent(env.app.url)}`,
+    redirectTo: `${issuer}/connect/endsession?post_logout_redirect_uri=${encodeURIComponent(appUrl ?? "")}`,
   })
 }
 
@@ -142,90 +180,16 @@ export function NavUser() {
 }
 ```
 
-### Key changes from original:
+### Key changes from original nav-user.tsx:
 - Removed `user` prop — now uses `useCurrentUser()` hook
-- Added `handleLogout()` that signs out and redirects to IDP end-session
+- Added `handleLogout()` using `NEXT_PUBLIC_` env vars (client-safe)
 - Shows loading state while session is loading
 - Displays real name/family/mobile from claims
-- Initials use real user name
 
 ## Modify file: `components/sidebar/app-sidebar.tsx`
 
-Remove the hardcoded user data and update NavUser usage:
+Only 2 changes needed:
+1. Delete the `data.user` object (lines with name/mobile/avatar)
+2. Change `<NavUser user={data.user} />` to `<NavUser />`
 
-```tsx
-"use client"
-
-import * as React from "react"
-
-import { NavMain } from "@/components/sidebar/nav-main"
-import { NavUser } from "@/components/sidebar/nav-user"
-import { TeamSwitcher } from "@/components/sidebar/team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
-import {
-  Coffee,
-  LayoutDashboardIcon,
-  UsersIcon,
-  BuildingIcon,
-  ShieldCheckIcon,
-  UserIcon,
-  MailPlusIcon,
-  ShoppingBagIcon,
-  DatabaseIcon,
-  UtensilsCrossedIcon,
-  GroupIcon,
-  TagsIcon,
-  ClipboardListIcon,
-  MonitorIcon,
-  ReceiptTextIcon,
-  WalletIcon,
-  Settings2Icon,
-  CloudIcon,
-  NetworkIcon,
-  SendIcon,
-  CalendarClockIcon,
-  ShoppingCartIcon,
-  FolderOpenIcon,
-} from "lucide-react"
-
-const data = {
-  teams: [
-    {
-      name: "اسمارت کاپ",
-      logo: <Coffee />,
-      plan: "نسخه بتا",
-    },
-  ],
-  navMain: [
-    // ... same navMain array as before, no changes needed ...
-  ],
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
-  )
-}
-```
-
-### Key changes from original:
-- Removed `data.user` (the hardcoded user object)
-- Changed `<NavUser user={data.user} />` to just `<NavUser />` (no props)
-- Everything else stays the same
+Everything else stays the same.

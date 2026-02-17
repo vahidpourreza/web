@@ -6,10 +6,10 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import type { MahtaUserClaims } from "@/types/auth";
+import type { MahtaUserCliams } from "@/types/auth";
 
 interface UseCurrentUserReturn {
-  user: MahtaUserClaims | null;
+  user: MahtaUserCliams | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   accessToken: string | null;
@@ -36,15 +36,15 @@ export function useCurrentUser(): UseCurrentUserReturn {
     };
   }
 
-  const claims: MahtaUserClaims = {
+  const claims: MahtaUserCliams = {
     user_id: session.user.user_id,
     name: session.user.name ?? "",
     family: session.user.family,
     mobile: session.user.mobile,
     email: session.user.email ?? "",
     role: session.user.role,
-    company_name: session.user.company_name,
-    company_id: session.user.company_id,
+    tenant_name: session.user.tenant_name,
+    tenant_id: session.user.tenant_id,
     broker_name: session.user.broker_name,
     broker_id: session.user.broker_id,
   };
@@ -75,7 +75,7 @@ export default function SomePage() {
     <div>
       <p>نام: {user?.name} {user?.family}</p>
       <p>موبایل: {user?.mobile}</p>
-      <p>شرکت: {user?.company_name}</p>
+      <p>شرکت: {user?.tenant_name}</p>
       <p>نقش: {user?.role}</p>
     </div>
   );
