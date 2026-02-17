@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
 );
 
 // Typed helper functions - all return ApiResponse<T>
-export async function apiGet<T>(url: string, params?: Record<string, unknown>) {
+export async function apiGet<T>(url: string, params?: object) {
   const response = await apiClient.get<ApiResponse<T>>(url, { params });
   return response.data;
 }
@@ -52,8 +52,8 @@ export async function apiPut<T>(url: string, data?: unknown) {
   return response.data;
 }
 
-export async function apiDelete<T>(url: string) {
-  const response = await apiClient.delete<ApiResponse<T>>(url);
+export async function apiDelete<T>(url: string, data?: unknown) {
+  const response = await apiClient.delete<ApiResponse<T>>(url, { data });
   return response.data;
 }
 
