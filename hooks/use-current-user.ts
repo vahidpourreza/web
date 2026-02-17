@@ -36,11 +36,11 @@ export function useCurrentUser(): UseCurrentUserReturn {
     name: session.user.name ?? '',
     family: session.user.family,
     mobile: session.user.mobile,
-    email: session.user.email ?? '',
     role: session.user.role,
     tenant_name: session.user.tenant_name,
     tenant_id: session.user.tenant_id,
-    broker_name: session.user.broker_name,
+    center_name: session.user.center_name,
+    center_id: session.user.center_id,
     broker_id: session.user.broker_id,
   };
   return {

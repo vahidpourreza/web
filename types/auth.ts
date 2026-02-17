@@ -7,11 +7,11 @@ export interface MahtaUserCliams {
   name: string;
   family: string;
   mobile: string;
-  email: string;
   role: string;
   tenant_name: string;
   tenant_id: string;
-  broker_name: string;
+  center_name: string;
+  center_id: string;
   broker_id: string;
 }
 

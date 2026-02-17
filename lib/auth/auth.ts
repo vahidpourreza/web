@@ -40,16 +40,16 @@ const config: NextAuthConfig = {
       // First login - store tokens and claims
       if (account && profile) {
         const claims: MahtaUserCliams = {
-          user_id: (profile.user_id as string) ?? '',
-          name: (profile.name as string) ?? '',
-          family: (profile.family as string) ?? '',
+          user_id: (profile.userid as string) ?? '',
+          name: (profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] as string) ?? '',
+          family: (profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'] as string) ?? '',
           mobile: (profile.mobile as string) ?? '',
-          email: (profile.email as string) ?? '',
           role: (profile.role as string) ?? '',
-          tenant_name: (profile.tenant_name as string) ?? '',
-          tenant_id: (profile.tenant_id as string) ?? '',
-          broker_name: (profile.broker_name as string) ?? '',
-          broker_id: (profile.broker_id as string) ?? '',
+          tenant_name: (profile.tenantname as string) ?? '',
+          tenant_id: (profile.tenantid as string) ?? '',
+          center_name: (profile.centername as string) ?? '',
+          center_id: (profile.centerid as string) ?? '',
+          broker_id: (profile.brokerid as string) ?? '',
         };
         return {
           ...token,
