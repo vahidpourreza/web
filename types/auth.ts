@@ -19,6 +19,7 @@ export interface MahtaUserCliams {
 declare module 'next-auth' {
   interface Session {
     accessToken: string;
+    idToken: string;
     error?: 'RefreshTokenError';
     user: MahtaUserCliams & DefaultSession['user'];
   }

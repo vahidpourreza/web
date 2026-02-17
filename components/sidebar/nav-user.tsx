@@ -1,6 +1,6 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -28,17 +28,26 @@ import {
   LoaderIcon,
 } from 'lucide-react';
 
-function handleLogout() {
-  const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-  signOut({
-    redirectTo: `${issuer}/connect/endsession?post_logout_redirect_uri=${encodeURIComponent(appUrl ?? '')}`,
-  });
-}
-
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const { data: session } = useSession();
   const { user, isLoading } = useCurrentUser();
+
+  async function handleLogout() {
+    const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const idToken = session?.idToken;
+
+    // First clear the NextAuth session without redirecting
+    await signOut({ redirect: false });
+
+    // Then redirect to IDP end-session to kill the IDP session too
+    const params = new URLSearchParams({
+      post_logout_redirect_uri: appUrl ?? '',
+      ...(idToken && { id_token_hint: idToken }),
+    });
+    window.location.href = `${issuer}/connect/endsession?${params.toString()}`;
+  }
 
   if (isLoading) {
     return (
