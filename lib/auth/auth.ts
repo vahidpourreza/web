@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import type { MahtaUserCliams } from '@/types/auth';
 import { refreshAccessToken } from '@/lib/auth/token';
+import { isSessionRevoked } from '@/lib/auth/logout-store';
 import env from '@/config/env';
 
 const config: NextAuthConfig = {
@@ -58,8 +59,14 @@ const config: NextAuthConfig = {
           expiresAt: account.expires_at!,
           idToken: account.id_token!,
           sid: (profile.sid as string) ?? undefined,
+          error: undefined,
           claims,
         };
+      }
+
+      // Check if session was revoked (federated logout from another app)
+      if (token.sid && isSessionRevoked(token.sid)) {
+        return { ...token, error: 'RefreshTokenError' as const };
       }
 
       // Token not expired yet

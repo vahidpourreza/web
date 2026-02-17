@@ -1,11 +1,11 @@
 'use client';
 import { useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoaderIcon } from 'lucide-react';
 
 export default function LoginPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
@@ -14,9 +14,16 @@ export default function LoginPage() {
     if (status === 'unauthenticated') {
       signIn('duende-ids', { callbackUrl });
     } else if (status === 'authenticated') {
-      router.replace(callbackUrl);
+      if (session?.error === 'RefreshTokenError') {
+        // Session was revoked (e.g. federated logout) — clear it and re-login
+        signOut({ redirect: false }).then(() => {
+          signIn('duende-ids', { callbackUrl });
+        });
+      } else {
+        router.replace(callbackUrl);
+      }
     }
-  }, [status, callbackUrl, router]);
+  }, [status, session, callbackUrl, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
