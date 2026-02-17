@@ -18,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   ChevronsUpDownIcon,
   SparklesIcon,
@@ -25,7 +26,6 @@ import {
   CreditCardIcon,
   BellIcon,
   LogOutIcon,
-  LoaderIcon,
 } from 'lucide-react';
 
 export function NavUser() {
@@ -54,8 +54,11 @@ export function NavUser() {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton size="lg">
-            <LoaderIcon className="size-4 animate-spin" />
-            <span>در حال بارگذاری...</span>
+            <Skeleton className="h-8 w-8 rounded-lg" />
+            <div className="grid flex-1 gap-1.5">
+              <Skeleton className="h-3.5 w-24" />
+              <Skeleton className="h-3 w-16" />
+            </div>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
