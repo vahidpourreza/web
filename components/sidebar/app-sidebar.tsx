@@ -1,19 +1,19 @@
-"use client"
+'use client';
 
-import * as React from "react"
+import * as React from 'react';
 
-import { NavMain } from "@/components/sidebar/nav-main"
+import { NavMain } from '@/components/sidebar/nav-main';
 // import { NavProjects } from "@/components/sidebar/nav-projects"
 // import { NavSecondary } from "@/components/sidebar/nav-secondary"
-import { NavUser } from "@/components/sidebar/nav-user"
-import { TeamSwitcher } from "@/components/sidebar/team-switcher"
+import { NavUser } from '@/components/sidebar/nav-user';
+import { TeamSwitcher } from '@/components/sidebar/team-switcher';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 import {
   Coffee,
   LayoutDashboardIcon,
@@ -38,99 +38,94 @@ import {
   CalendarClockIcon,
   ShoppingCartIcon,
   FolderOpenIcon,
-} from "lucide-react"
+} from 'lucide-react';
 
 const data = {
-  user: {
-    name: "وحید",
-    mobile: "09112223344",
-    avatar: "/avatars/shadcn.png",
-  },
   teams: [
     {
-      name: "اسمارت کاپ",
+      name: 'اسمارت کاپ',
       logo: <Coffee />,
-      plan: "نسخه بتا",
+      plan: 'نسخه بتا',
     },
   ],
   navMain: [
     {
-      title: "داشبورد",
-      url: "/",
+      title: 'داشبورد',
+      url: '/',
       icon: <LayoutDashboardIcon />,
     },
     {
-      title: "کاربران و دسترسی‌ها",
-      url: "#",
+      title: 'کاربران و دسترسی‌ها',
+      url: '#',
       icon: <UsersIcon />,
       items: [
         {
-          title: "مراکز",
-          url: "/access/centers",
+          title: 'مراکز',
+          url: '/access/centers',
           icon: <BuildingIcon />,
         },
         {
-          title: "گروه‌های دسترسی",
-          url: "/access/access-groups",
+          title: 'گروه‌های دسترسی',
+          url: '/access/access-groups',
           icon: <ShieldCheckIcon />,
         },
         {
-          title: "کاربران",
-          url: "/access/users",
+          title: 'کاربران',
+          url: '/access/users',
           icon: <UserIcon />,
         },
         {
-          title: "دعوت‌نامه‌ها",
-          url: "/access/invitations",
+          title: 'دعوت‌نامه‌ها',
+          url: '/access/invitations',
           icon: <MailPlusIcon />,
         },
       ],
     },
     {
-      title: "فروش",
-      url: "#",
+      title: 'فروش',
+      url: '#',
       icon: <ShoppingBagIcon />,
       items: [
         {
-          title: "اطلاعات پایه",
-          url: "#",
+          title: 'اطلاعات پایه',
+          url: '#',
           icon: <DatabaseIcon />,
           items: [
             {
-              title: "آیتم منو",
-              url: "/sales/menu-items",
+              title: 'آیتم منو',
+              url: '/sales/menu-items',
               icon: <UtensilsCrossedIcon />,
             },
             {
-              title: "گروه‌بندی",
-              url: "/sales/groups",
+              title: 'گروه‌بندی',
+              url: '/sales/groups',
               icon: <GroupIcon />,
             },
             {
-              title: "دسته‌بندی",
-              url: "/sales/categories",
+              title: 'دسته‌بندی',
+              url: '/sales/categories',
               icon: <TagsIcon />,
             },
           ],
         },
         {
-          title: "عملیات‌ها",
-          url: "#",
+          title: 'عملیات‌ها',
+          url: '#',
           icon: <ClipboardListIcon />,
           items: [
             {
-              title: "صندوق فروش",
-              url: "/sales/pos",
+              title: 'صندوق فروش',
+              url: '/sales/pos',
               icon: <MonitorIcon />,
             },
             {
-              title: "سفارشات",
-              url: "/sales/orders",
+              title: 'سفارشات',
+              url: '/sales/orders',
               icon: <ReceiptTextIcon />,
             },
             {
-              title: "مدیریت صندوق",
-              url: "/sales/cash-management",
+              title: 'مدیریت صندوق',
+              url: '/sales/cash-management',
               icon: <WalletIcon />,
             },
           ],
@@ -138,42 +133,42 @@ const data = {
       ],
     },
     {
-      title: "تنظیمات",
-      url: "#",
+      title: 'تنظیمات',
+      url: '#',
       icon: <Settings2Icon />,
       items: [
         {
-          title: "کلاینت‌ها",
-          url: "#",
+          title: 'کلاینت‌ها',
+          url: '#',
           icon: <CloudIcon />,
           items: [
             {
-              title: "کلاینت و دستگاه‌ها",
-              url: "/settings/clients/clients",
+              title: 'کلاینت و دستگاه‌ها',
+              url: '/settings/clients/clients',
               icon: <NetworkIcon />,
             },
           ],
         },
         {
-          title: "پیام‌رسانی",
-          url: "#",
+          title: 'پیام‌رسانی',
+          url: '#',
           icon: <SendIcon />,
           items: [
             {
-              title: "رخدادها",
-              url: "/settings/messaging/events",
+              title: 'رخدادها',
+              url: '/settings/messaging/events',
               icon: <CalendarClockIcon />,
             },
           ],
         },
         {
-          title: "فروش",
-          url: "#",
+          title: 'فروش',
+          url: '#',
           icon: <ShoppingCartIcon />,
           items: [
             {
-              title: "کیوسک و نوبت",
-              url: "/settings/order/tenant-setting",
+              title: 'کیوسک و نوبت',
+              url: '/settings/order/tenant-setting',
               icon: <FolderOpenIcon />,
             },
           ],
@@ -210,7 +205,7 @@ const data = {
   //     icon: <MapIcon />,
   //   },
   // ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -224,9 +219,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
