@@ -110,7 +110,11 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem
+                variant="destructive"
+                className="cursor-pointer !text-amber-500 focus:!bg-amber-500/10 [&_svg]:!text-amber-500"
+                disabled
+              >
                 <SparklesIcon />
                 ارتقا به پرو
               </DropdownMenuItem>
@@ -121,17 +125,21 @@ export function NavUser() {
                 <BadgeCheckIcon />
                 حساب کاربری
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer" disabled>
                 <CreditCardIcon />
                 صورتحساب
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer" disabled>
                 <BellIcon />
                 اعلان‌ها
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+            <DropdownMenuItem
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={handleLogout}
+            >
               <LogOutIcon />
               خروج
             </DropdownMenuItem>
