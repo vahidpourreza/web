@@ -44,7 +44,7 @@ function NavSubItem({ item, pathname }: { item: NavMainItem; pathname: string })
             <SidebarMenuSubButton className="cursor-pointer">
               {item.icon}
               <span>{item.title}</span>
-              <ChevronLeftIcon className="ms-auto size-3 transition-transform duration-200 [[data-state=open]>&]:rotate-90" />
+              <ChevronLeftIcon className="ms-auto size-3 transition-transform duration-200 [[data-state=open]>&]:-rotate-90" />
             </SidebarMenuSubButton>
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -96,7 +96,7 @@ export function NavMain({
                   <SidebarMenuButton tooltip={item.title}>
                     {item.icon}
                     <span>{item.title}</span>
-                    <ChevronLeftIcon className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <ChevronLeftIcon className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:-rotate-90" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
