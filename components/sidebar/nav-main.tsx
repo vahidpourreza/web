@@ -61,7 +61,7 @@ function NavSubItem({ item, pathname }: { item: NavMainItem; pathname: string })
 
   return (
     <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild isActive={pathname === item.url}>
+      <SidebarMenuSubButton asChild isActive={pathname === item.url} className="cursor-pointer">
         <Link href={item.url}>
           {item.icon}
           <span>{item.title}</span>
@@ -93,7 +93,7 @@ export function NavMain({
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton tooltip={item.title} className="cursor-pointer">
                     {item.icon}
                     <span>{item.title}</span>
                     <ChevronLeftIcon className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:-rotate-90" />
@@ -110,7 +110,7 @@ export function NavMain({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} isActive={pathname === item.url} asChild>
+              <SidebarMenuButton tooltip={item.title} isActive={pathname === item.url} asChild className="cursor-pointer">
                 <Link href={item.url}>
                   {item.icon}
                   <span>{item.title}</span>
