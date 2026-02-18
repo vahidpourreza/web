@@ -157,7 +157,9 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
       return;
     }
     setSavingBirthDate(true);
-    const { ok, messages } = await profileService.updateDateOfBirth({ birthDay: birthDateText.trim() });
+    const { ok, messages } = await profileService.updateDateOfBirth({
+      birthDay: birthDateText.trim(),
+    });
     if (!ok) {
       toast.error(messages);
     } else {

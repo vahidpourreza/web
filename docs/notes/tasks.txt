@@ -1,0 +1,9 @@
+- Uload avatar - delete avatar (add filemanager service)
+- form validation (zod - zod farsi?)
+-  state managmnet?
+- birthdate problem.(should be converted)
+
+- تعریف ساختار منو های جدید
+- دریافت تمامی منو های اپلیکشین
+- کار با میزهای کاربر
+- status code pages.
