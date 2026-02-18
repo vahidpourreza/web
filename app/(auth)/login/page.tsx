@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoaderIcon } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -26,11 +27,16 @@ export default function LoginPage() {
   }, [status, session, callbackUrl, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <LoaderIcon className="size-8 animate-spin text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">در حال انتقال به صفحه ورود...</p>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-muted/40">
+      <Card className="w-full max-w-sm shadow-lg">
+        <CardHeader className="items-center text-center">
+          <CardTitle className="text-base">حساب کاربری</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-4 py-8">
+          <LoaderIcon className="size-8 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">در حال بررسی احراز هویت...</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
