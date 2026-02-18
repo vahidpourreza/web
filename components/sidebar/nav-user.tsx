@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { AccountSheet } from '@/components/account/account-sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -32,6 +34,7 @@ export function NavUser() {
   const { isMobile } = useSidebar();
   const { data: session } = useSession();
   const { user, isLoading } = useCurrentUser();
+  const [accountOpen, setAccountOpen] = useState(false);
 
   async function handleLogout() {
     const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
@@ -77,9 +80,9 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="cursor-pointer data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="rounded-lg">
                 <AvatarImage src="/avatars/shadcn.png" alt={displayName} />
                 <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
               </Avatar>
@@ -91,14 +94,14 @@ export function NavUser() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
             side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="rounded-lg">
                   <AvatarImage src="/avatars/shadcn.png" alt={displayName} />
                   <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
                 </Avatar>
@@ -112,7 +115,7 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuItem
                 variant="destructive"
-                className="cursor-pointer !text-amber-500 focus:!bg-amber-500/10 [&_svg]:!text-amber-500"
+                className="!text-amber-500 focus:!bg-amber-500/10 [&_svg]:!text-amber-500"
                 disabled
               >
                 <SparklesIcon />
@@ -121,15 +124,15 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem onClick={() => setAccountOpen(true)}>
                 <BadgeCheckIcon />
                 حساب کاربری
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" disabled>
+              <DropdownMenuItem disabled>
                 <CreditCardIcon />
                 صورتحساب
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" disabled>
+              <DropdownMenuItem disabled>
                 <BellIcon />
                 اعلان‌ها
               </DropdownMenuItem>
@@ -137,7 +140,6 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant="destructive"
-              className="cursor-pointer"
               onClick={handleLogout}
             >
               <LogOutIcon />
@@ -145,6 +147,7 @@ export function NavUser() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <AccountSheet open={accountOpen} onOpenChange={setAccountOpen} />
       </SidebarMenuItem>
     </SidebarMenu>
   );

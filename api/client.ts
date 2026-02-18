@@ -2,6 +2,8 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
 import type { ApiResponse } from '@/types/api';
 
+// --- Client ---
+
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_GATEWAY_URL,
   timeout: 30000,
@@ -25,8 +27,11 @@ apiClient.interceptors.request.use(
 
 // Handle errors globally
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error: AxiosError<ApiResponse<unknown>>) => {
+  (response) => {
+    //  console.log('API Response:', response.config.method?.toUpperCase(), response.config.url, response.status, response.data , response);
+    return response;
+  },
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
@@ -36,25 +41,91 @@ apiClient.interceptors.response.use(
   },
 );
 
-// Typed helper functions - all return ApiResponse<T>
-export async function apiGet<T>(url: string, params?: object) {
-  const response = await apiClient.get<ApiResponse<T>>(url, { params });
-  return response.data;
+// --- Extract error messages ---
+
+function extractMessages(err: unknown): string[] {
+  const data = (err as AxiosError).response?.data;
+
+  if (Array.isArray(data) && data.length) {
+    return data;
+  }
+
+  const messages = (data as { messages?: string[] })?.messages;
+  if (messages?.length) {
+    return messages;
+  }
+
+  return ['خطای ناشناخته'];
 }
 
-export async function apiPost<T>(url: string, data?: unknown) {
-  const response = await apiClient.post<ApiResponse<T>>(url, data);
-  return response.data;
+// --- Typed helper functions ---
+
+export async function apiGet<T>(url: string, params?: object): Promise<ApiResponse<T>> {
+  try {
+    const response = await apiClient.get<T>(url, { params });
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
 }
 
-export async function apiPut<T>(url: string, data?: unknown) {
-  const response = await apiClient.put<ApiResponse<T>>(url, data);
-  return response.data;
+export async function apiPost<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+  try {
+    const response = await apiClient.post<T>(url, data);
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
 }
 
-export async function apiDelete<T>(url: string, data?: unknown) {
-  const response = await apiClient.delete<ApiResponse<T>>(url, { data });
-  return response.data;
+export async function apiPut<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+  try {
+    const response = await apiClient.put<T>(url, data);
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
+}
+
+export async function apiDelete<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+  try {
+    const response = await apiClient.delete<T>(url, { data });
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
 }
 
 export default apiClient;

@@ -1,5 +1,7 @@
 export interface ApiResponse<T> {
+  ok: boolean;
   data: T | null;
   status: number;
-  messages: string[];
+  allMessages: string[];
+  messages: string;
 }
