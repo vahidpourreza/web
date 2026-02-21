@@ -6,3 +6,9 @@ export type {
   CurrentTenantCurrentLicenseAccessResponse,
   NavigationByAdminScopeResponse,
 } from './service';
+export {
+  useNavigationTreeByClient,
+  useLicensableTree,
+  useCurrentTenantLicenseAccess,
+  useNavigationTreeByAdminScope,
+} from './hooks';

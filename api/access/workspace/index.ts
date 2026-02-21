@@ -11,3 +11,15 @@ export type {
   CurrentUserMenuResponse,
   UserAvailableWorkDeskResponse,
 } from './service';
+export {
+  useMyDesks,
+  useDesk,
+  useMyWorkSpace,
+  useMyMenus,
+  useMyAvailableWorkDesks,
+  useAddDesk,
+  useSwapDesk,
+  useUpdateDesk,
+  useToggleLayout,
+  useDeleteDesk,
+} from './hooks';

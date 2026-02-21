@@ -9,3 +9,11 @@ export type {
   AccessGroupByIdResponse,
   TenantAccessGroupSummaryResponse,
 } from './service';
+export {
+  useAllAccessGroupsSummary,
+  useAccessGroupById,
+  useTenantAllAccessGroupsSummary,
+  useCreateAccessGroup,
+  useModifyAccessGroup,
+  useDeleteAccessGroup,
+} from './hooks';

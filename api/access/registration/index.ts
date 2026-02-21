@@ -6,3 +6,9 @@ export type {
   ForgetPasswordRequest,
   ValidateCredentialsByPasswordRequest,
 } from './service';
+export {
+  useCreateInvitedUser,
+  useCreateTenantAdmin,
+  useCreateTenantStaff,
+  useForgetPassword,
+} from './hooks';

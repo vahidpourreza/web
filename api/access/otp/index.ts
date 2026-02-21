@@ -6,3 +6,4 @@ export type {
   GetOtpMobileRequest,
   OtpMobileResponse,
 } from './service';
+export { useOtpMobile, useGenerateOtp, useGenerateOtpByInvitationCode, useVerifyOtp } from './hooks';

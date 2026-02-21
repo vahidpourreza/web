@@ -7,3 +7,8 @@ export type {
   UserAccessibleCenterResponse,
   UserAccessGroupResponse,
 } from './service';
+export {
+  useUserActiveTenants,
+  useUserCentersWithAccessGroups,
+  useSetUserCenterMembership,
+} from './hooks';

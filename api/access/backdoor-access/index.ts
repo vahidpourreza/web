@@ -5,4 +5,12 @@ export type {
   GetBackdoorAccessesByUserRequest,
   UserWithBackdoorAccessSummaryResponse,
   UserBackdoorAccessResponse,
+  UserBackdoorInCenterResponse,
+  UserBackdoorAccessGroupResponse,
 } from './service';
+export {
+  useUsersWithBackdoorAccess,
+  useBackdoorAccessesByUser,
+  useSetBackdoorAccess,
+  useDeleteFullBackdoorAccess,
+} from './hooks';

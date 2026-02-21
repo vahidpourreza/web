@@ -8,3 +8,11 @@ export type {
   UserInvitationDetailsResponse,
   PendingUserInvitationInTenantResponse,
 } from './service';
+export {
+  useInvitationDetails,
+  useAllPendingInvitations,
+  useCreateInvitation,
+  useRevokeInvitation,
+  useAcceptInvitation,
+  useResendInvitation,
+} from './hooks';

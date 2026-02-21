@@ -6,3 +6,4 @@ export type {
   TenantSummaryDetailResponse,
   TenantCompactSummaryResponse,
 } from './service';
+export { useTenantById, useAllTenantsSummary, useAllTenantCompactSummary, useCreateTenant } from './hooks';

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCurrentUser } from '@/lib/auth';
 import { AccountSheet } from '@/components/account/account-sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -35,6 +36,7 @@ export function NavUser() {
   const { data: session } = useSession();
   const { user, isLoading } = useCurrentUser();
   const [accountOpen, setAccountOpen] = useState(false);
+  const qc = useQueryClient();
 
   async function handleLogout() {
     const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
@@ -43,6 +45,7 @@ export function NavUser() {
 
     // First clear the NextAuth session without redirecting
     await signOut({ redirect: false });
+    qc.clear();
 
     // Then redirect to IDP end-session to kill the IDP session too
     const params = new URLSearchParams({
