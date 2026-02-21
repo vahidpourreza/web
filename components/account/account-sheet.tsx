@@ -139,7 +139,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     if (!ok) {
       toast.error(messages);
     } else {
-      toast.success('نام با موفقیت ذخیره شد');
+      toast.success('مشخصات با موفقیت ویرایش شد.');
       setProfile((prev) =>
         prev ? { ...prev, firstName: data.firstName.trim(), lastName: data.lastName.trim() } : prev,
       );

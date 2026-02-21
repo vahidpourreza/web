@@ -9,4 +9,13 @@
 - status code pages.
 
 
--what else libs/packages should be use?
+- لود کردن اسم - فامیل - موبایل از api نه کلیم
+- نمایش devtool react query
+- whats the best way to implement reactquery into this project.
+- is not better centralize the zods?
+- whats  the server actions in nextjs?
+- sonner icons in the shadcn icon are animated.
+- what thing in the project is in the root that should be in a certain forlder?
+- datetime picker????? 
+- omtimestic / pesemistic updates???
+-what if date not fetched? fails ....?
