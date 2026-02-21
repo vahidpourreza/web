@@ -1,9 +1,20 @@
 'use client';
 
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
+function ErrorThrower(): never {
+  throw new Error('خطایی در لود کردن صفحه تست پیش آمد');
+}
+
 export default function TestPage() {
+  const [showError, setShowError] = useState(false);
+
+  if (showError) {
+    return <ErrorThrower />;
+  }
+
   return (
     <div className="flex flex-wrap gap-3 p-6">
       <Button onClick={() => toast.success('عملیات با موفقیت انجام شد')}>Success</Button>
@@ -37,6 +48,10 @@ export default function TestPage() {
         }}
       >
         All at once
+      </Button>
+
+      <Button variant="destructive" onClick={() => setShowError(true)}>
+        Throw Error
       </Button>
 
       <Button
