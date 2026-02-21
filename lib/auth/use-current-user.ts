@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import type { MahtaUserCliams } from '@/types/auth';
+import type { MahtaUserCliams } from './types';
 
 interface UseCurrentUserReturn {
   user: MahtaUserCliams | null;

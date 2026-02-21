@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
-import type { MahtaUserCliams } from '@/types/auth';
+import type { MahtaUserCliams } from './types';
 import { refreshAccessToken } from '@/lib/auth/token';
 import { isSessionRevoked } from '@/lib/auth/logout-store';
 import env from '@/config/env';

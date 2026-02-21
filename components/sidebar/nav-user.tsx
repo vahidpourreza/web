@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useCurrentUser } from '@/lib/auth';
 import { AccountSheet } from '@/components/account/account-sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
