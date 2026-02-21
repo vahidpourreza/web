@@ -38,6 +38,21 @@ export default function TestPage() {
       >
         All at once
       </Button>
+
+      <Button
+        variant="outline"
+        onClick={() =>
+          toast('رخداد ایجاد شد', {
+            description: 'شنبه, 03 فروردین 1406 در 9:00 صبح',
+            action: {
+              label: 'بازگشت',
+              onClick: () => console.log('Undo'),
+            },
+          })
+        }
+      >
+        Show Toast
+      </Button>
     </div>
   );
 }

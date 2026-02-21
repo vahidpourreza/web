@@ -1,21 +1,12 @@
 - Uload avatar - delete avatar (add filemanager service)
-- form validation (zod - zod farsi?)
--  state managmnet?
 - birthdate problem.(should be converted)
 
 - تعریف ساختار منو های جدید
 - دریافت تمامی منو های اپلیکشین
 - کار با میزهای کاربر
-- status code pages.
 
 
-- لود کردن اسم - فامیل - موبایل از api نه کلیم
-- نمایش devtool react query
-- whats the best way to implement reactquery into this project.
-- is not better centralize the zods?
-- whats  the server actions in nextjs?
-- sonner icons in the shadcn icon are animated.
-- what thing in the project is in the root that should be in a certain forlder?
+
 - datetime picker????? 
-- omtimestic / pesemistic updates???
--what if date not fetched? fails ....?
+-what if data not fetched? fails ....?
+- status code pages.
