@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { toast } from 'sonner';
 import {
   CameraIcon,
@@ -30,6 +33,35 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
+// --- Zod Schemas ---
+
+const personalSchema = z.object({
+  firstName: z.string().min(1, 'نام الزامی است'),
+  lastName: z.string().min(1, 'نام خانوادگی الزامی است'),
+});
+
+const accountSchema = z.object({
+  username: z.string().min(1, 'نام کاربری الزامی است'),
+  birthDate: z.string().min(1, 'تاریخ تولد الزامی است'),
+});
+
+const securitySchema = z
+  .object({
+    currentPassword: z.string().min(1, 'رمز عبور فعلی الزامی است'),
+    newPassword: z.string().min(6, 'رمز عبور جدید باید حداقل ۶ کاراکتر باشد'),
+    confirmPassword: z.string().min(1, 'تکرار رمز عبور الزامی است'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'رمز عبور جدید و تکرار آن مطابقت ندارند',
+    path: ['confirmPassword'],
+  });
+
+type PersonalForm = z.infer<typeof personalSchema>;
+type AccountForm = z.infer<typeof accountSchema>;
+type SecurityForm = z.infer<typeof securitySchema>;
+
+// --- Component ---
+
 interface AccountSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -40,30 +72,27 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('personal');
 
-  // Name fields
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [savingName, setSavingName] = useState(false);
-
-  // Username field
-  const [username, setUsername] = useState('');
-  const [savingUsername, setSavingUsername] = useState(false);
-
-  // Birthdate field
-  const [birthDateText, setBirthDateText] = useState('');
-  const [savingBirthDate, setSavingBirthDate] = useState(false);
-
-  // Password fields
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // Password visibility toggles (UI-only, not form data)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [savingPassword, setSavingPassword] = useState(false);
 
-  // Error states
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  // --- Forms ---
+
+  const personalForm = useForm<PersonalForm>({
+    resolver: zodResolver(personalSchema),
+    defaultValues: { firstName: '', lastName: '' },
+  });
+
+  const accountForm = useForm<AccountForm>({
+    resolver: zodResolver(accountSchema),
+    defaultValues: { username: '', birthDate: '' },
+  });
+
+  const securityForm = useForm<SecurityForm>({
+    resolver: zodResolver(securitySchema),
+    defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
+  });
 
   // Fetch profile when sheet opens
   useEffect(() => {
@@ -76,139 +105,94 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
         toast.error(messages);
       } else if (data.firstName) {
         setProfile(data);
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setUsername(data.username ?? '');
-        if (data.birthDay) {
-          setBirthDateText(data.birthDay.split('T')[0] ?? '');
-        }
+        personalForm.reset({ firstName: data.firstName, lastName: data.lastName });
+        accountForm.reset({
+          username: data.username ?? '',
+          birthDate: data.birthDay ? (data.birthDay.split('T')[0] ?? '') : '',
+        });
       }
       setLoading(false);
     }
 
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   function handleOpenChange(value: boolean) {
     if (!value) {
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      securityForm.reset();
       setShowCurrentPassword(false);
       setShowNewPassword(false);
       setShowConfirmPassword(false);
       setActiveTab('personal');
-      setErrors({});
     }
     onOpenChange(value);
   }
 
-  function clearError(field: string) {
-    setErrors((prev) => {
-      const next = { ...prev };
-      delete next[field];
-      return next;
-    });
-  }
+  // --- Submit Handlers ---
 
-  async function handleSaveName() {
-    const newErrors: Record<string, string> = {};
-    if (!firstName.trim()) newErrors.firstName = 'نام الزامی است';
-    if (!lastName.trim()) newErrors.lastName = 'نام خانوادگی الزامی است';
-    if (Object.keys(newErrors).length) {
-      setErrors(newErrors);
-      return;
-    }
-    setSavingName(true);
+  async function onSubmitPersonal(data: PersonalForm) {
     const { ok, messages } = await profileService.updateFullName({
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
+      firstName: data.firstName.trim(),
+      lastName: data.lastName.trim(),
     });
     if (!ok) {
       toast.error(messages);
     } else {
-      toast.success('نام با موفقیت ذخیره شد');
+      toast.success('مشخصات با موفقیت ویرایش شد.');
       setProfile((prev) =>
-        prev ? { ...prev, firstName: firstName.trim(), lastName: lastName.trim() } : prev,
+        prev ? { ...prev, firstName: data.firstName.trim(), lastName: data.lastName.trim() } : prev,
       );
     }
-    setSavingName(false);
   }
 
-  async function handleSaveUsername() {
-    if (!username.trim()) {
-      setErrors({ username: 'نام کاربری الزامی است' });
-      return;
-    }
-    setSavingUsername(true);
-    const { ok, messages } = await profileService.setUserName({ username: username.trim() });
-    if (!ok) {
-      toast.error(messages);
-    } else {
+  async function onSubmitAccount(data: AccountForm) {
+    if (!hasUsername && data.username.trim()) {
+      const { ok, messages } = await profileService.setUserName({ username: data.username.trim() });
+      if (!ok) {
+        toast.error(messages);
+        return;
+      }
       toast.success('نام کاربری با موفقیت ذخیره شد');
-      setProfile((prev) => (prev ? { ...prev, username: username.trim() } : prev));
+      setProfile((prev) => (prev ? { ...prev, username: data.username.trim() } : prev));
     }
-    setSavingUsername(false);
-  }
 
-  async function handleSaveBirthDate() {
-    if (!birthDateText.trim()) {
-      setErrors((prev) => ({ ...prev, birthDate: 'تاریخ تولد الزامی است' }));
-      return;
-    }
-    setSavingBirthDate(true);
-    const { ok, messages } = await profileService.updateDateOfBirth({
-      birthDay: birthDateText.trim(),
-    });
-    if (!ok) {
-      toast.error(messages);
-    } else {
+    if (data.birthDate.trim()) {
+      const { ok, messages } = await profileService.updateDateOfBirth({
+        birthDay: data.birthDate.trim(),
+      });
+      if (!ok) {
+        toast.error(messages);
+        return;
+      }
       toast.success('تاریخ تولد با موفقیت ذخیره شد');
-      setProfile((prev) => (prev ? { ...prev, birthDay: birthDateText.trim() } : prev));
+      setProfile((prev) => (prev ? { ...prev, birthDay: data.birthDate.trim() } : prev));
     }
-    setSavingBirthDate(false);
   }
 
-  async function handleSavePassword() {
-    const newErrors: Record<string, string> = {};
-    if (!currentPassword) newErrors.currentPassword = 'رمز عبور فعلی الزامی است';
-    if (!newPassword) newErrors.newPassword = 'رمز عبور جدید الزامی است';
-    if (!confirmPassword) newErrors.confirmPassword = 'تکرار رمز عبور الزامی است';
-    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
-      newErrors.confirmPassword = 'رمز عبور جدید و تکرار آن مطابقت ندارند';
-    }
-    if (newPassword && newPassword.length < 6) {
-      newErrors.newPassword = 'رمز عبور جدید باید حداقل ۶ کاراکتر باشد';
-    }
-    if (Object.keys(newErrors).length) {
-      setErrors(newErrors);
-      return;
-    }
-    setSavingPassword(true);
-    const { ok, messages } = await profileService.changePassword({ currentPassword, newPassword });
+  async function onSubmitSecurity(data: SecurityForm) {
+    const { ok, messages } = await profileService.changePassword({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    });
     if (!ok) {
       toast.error(messages);
     } else {
       toast.success('رمز عبور با موفقیت تغییر کرد');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      securityForm.reset();
     }
-    setSavingPassword(false);
   }
 
   async function handleSave() {
-    setErrors({});
     switch (activeTab) {
       case 'personal':
-        await handleSaveName();
+        await personalForm.handleSubmit(onSubmitPersonal)();
         break;
       case 'account':
-        if (!hasUsername && username.trim()) await handleSaveUsername();
-        if (birthDateText.trim()) await handleSaveBirthDate();
+        await accountForm.handleSubmit(onSubmitAccount)();
         break;
       case 'security':
-        await handleSavePassword();
+        await securityForm.handleSubmit(onSubmitSecurity)();
         break;
     }
   }
@@ -219,7 +203,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     security: ['تغییر رمز عبور', 'در حال تغییر...'],
   };
 
-  const isSaving = savingName || savingUsername || savingBirthDate || savingPassword;
+  const isSaving =
+    personalForm.formState.isSubmitting ||
+    accountForm.formState.isSubmitting ||
+    securityForm.formState.isSubmitting;
   const initials = profile ? profile.firstName.charAt(0) + profile.lastName.charAt(0) : '';
   const hasUsername = !!profile?.username;
 
@@ -272,14 +259,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                 </div>
 
                 {/* Tabs */}
-                <Tabs
-                  value={activeTab}
-                  onValueChange={(v) => {
-                    setActiveTab(v);
-                    setErrors({});
-                  }}
-                  className="w-full"
-                >
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                   <TabsList className="w-full">
                     <TabsTrigger value="personal" className="flex-1">
                       <UserIcon className="size-3.5" />
@@ -304,16 +284,14 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                       </Label>
                       <Input
                         id="firstName"
-                        value={firstName}
-                        onChange={(e) => {
-                          setFirstName(e.target.value);
-                          clearError('firstName');
-                        }}
+                        {...personalForm.register('firstName')}
                         placeholder="نام"
-                        aria-invalid={!!errors.firstName}
+                        aria-invalid={!!personalForm.formState.errors.firstName}
                       />
-                      {errors.firstName && (
-                        <p className="text-xs text-destructive">{errors.firstName}</p>
+                      {personalForm.formState.errors.firstName && (
+                        <p className="text-xs text-destructive">
+                          {personalForm.formState.errors.firstName.message}
+                        </p>
                       )}
                     </div>
                     <div className="space-y-2.5">
@@ -323,16 +301,14 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                       </Label>
                       <Input
                         id="lastName"
-                        value={lastName}
-                        onChange={(e) => {
-                          setLastName(e.target.value);
-                          clearError('lastName');
-                        }}
+                        {...personalForm.register('lastName')}
                         placeholder="نام خانوادگی"
-                        aria-invalid={!!errors.lastName}
+                        aria-invalid={!!personalForm.formState.errors.lastName}
                       />
-                      {errors.lastName && (
-                        <p className="text-xs text-destructive">{errors.lastName}</p>
+                      {personalForm.formState.errors.lastName && (
+                        <p className="text-xs text-destructive">
+                          {personalForm.formState.errors.lastName.message}
+                        </p>
                       )}
                     </div>
                   </TabsContent>
@@ -351,17 +327,15 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                       </div>
                       <Input
                         id="username"
-                        value={username}
-                        onChange={(e) => {
-                          setUsername(e.target.value);
-                          clearError('username');
-                        }}
+                        {...accountForm.register('username')}
                         placeholder="نام کاربری خود را وارد کنید"
                         disabled={hasUsername}
-                        aria-invalid={!!errors.username}
+                        aria-invalid={!!accountForm.formState.errors.username}
                       />
-                      {errors.username && (
-                        <p className="text-xs text-destructive">{errors.username}</p>
+                      {accountForm.formState.errors.username && (
+                        <p className="text-xs text-destructive">
+                          {accountForm.formState.errors.username.message}
+                        </p>
                       )}
                     </div>
 
@@ -371,18 +345,16 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                       <Label htmlFor="birthDate">تاریخ تولد</Label>
                       <Input
                         id="birthDate"
-                        value={birthDateText}
-                        onChange={(e) => {
-                          setBirthDateText(e.target.value);
-                          clearError('birthDate');
-                        }}
+                        {...accountForm.register('birthDate')}
                         placeholder="1380/01/15"
                         dir="ltr"
                         className="text-start"
-                        aria-invalid={!!errors.birthDate}
+                        aria-invalid={!!accountForm.formState.errors.birthDate}
                       />
-                      {errors.birthDate && (
-                        <p className="text-xs text-destructive">{errors.birthDate}</p>
+                      {accountForm.formState.errors.birthDate && (
+                        <p className="text-xs text-destructive">
+                          {accountForm.formState.errors.birthDate.message}
+                        </p>
                       )}
                     </div>
                   </TabsContent>
@@ -398,14 +370,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                         <Input
                           id="currentPassword"
                           type={showCurrentPassword ? 'text' : 'password'}
-                          value={currentPassword}
-                          onChange={(e) => {
-                            setCurrentPassword(e.target.value);
-                            clearError('currentPassword');
-                          }}
+                          {...securityForm.register('currentPassword')}
                           placeholder="رمز عبور فعلی"
                           className="pe-9"
-                          aria-invalid={!!errors.currentPassword}
+                          aria-invalid={!!securityForm.formState.errors.currentPassword}
                         />
                         <button
                           type="button"
@@ -419,8 +387,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                           )}
                         </button>
                       </div>
-                      {errors.currentPassword && (
-                        <p className="text-xs text-destructive">{errors.currentPassword}</p>
+                      {securityForm.formState.errors.currentPassword && (
+                        <p className="text-xs text-destructive">
+                          {securityForm.formState.errors.currentPassword.message}
+                        </p>
                       )}
                     </div>
                     <div className="space-y-2.5">
@@ -432,14 +402,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                         <Input
                           id="newPassword"
                           type={showNewPassword ? 'text' : 'password'}
-                          value={newPassword}
-                          onChange={(e) => {
-                            setNewPassword(e.target.value);
-                            clearError('newPassword');
-                          }}
+                          {...securityForm.register('newPassword')}
                           placeholder="رمز عبور جدید"
                           className="pe-9"
-                          aria-invalid={!!errors.newPassword}
+                          aria-invalid={!!securityForm.formState.errors.newPassword}
                         />
                         <button
                           type="button"
@@ -453,8 +419,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                           )}
                         </button>
                       </div>
-                      {errors.newPassword && (
-                        <p className="text-xs text-destructive">{errors.newPassword}</p>
+                      {securityForm.formState.errors.newPassword && (
+                        <p className="text-xs text-destructive">
+                          {securityForm.formState.errors.newPassword.message}
+                        </p>
                       )}
                     </div>
                     <div className="space-y-2.5">
@@ -466,14 +434,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                         <Input
                           id="confirmPassword"
                           type={showConfirmPassword ? 'text' : 'password'}
-                          value={confirmPassword}
-                          onChange={(e) => {
-                            setConfirmPassword(e.target.value);
-                            clearError('confirmPassword');
-                          }}
+                          {...securityForm.register('confirmPassword')}
                           placeholder="تکرار رمز عبور جدید"
                           className="pe-9"
-                          aria-invalid={!!errors.confirmPassword}
+                          aria-invalid={!!securityForm.formState.errors.confirmPassword}
                         />
                         <button
                           type="button"
@@ -487,8 +451,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                           )}
                         </button>
                       </div>
-                      {errors.confirmPassword && (
-                        <p className="text-xs text-destructive">{errors.confirmPassword}</p>
+                      {securityForm.formState.errors.confirmPassword && (
+                        <p className="text-xs text-destructive">
+                          {securityForm.formState.errors.confirmPassword.message}
+                        </p>
                       )}
                     </div>
                   </TabsContent>
