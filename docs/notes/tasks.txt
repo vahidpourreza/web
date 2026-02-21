@@ -8,3 +8,14 @@
 - Uload avatar - delete avatar (add filemanager service)
 - تعریف ساختار منو های جدید
 - دریافت تمامی منو های اپلیکشین
+- create a offline needed handle things.
+-move theme switcher somewhere else in the setting...
+
+
+
+https://kiarash-z.github.io/react-modern-calendar-datepicker/docs/different-locales
+https://github.com/rzkhosroshahi/zaman
+https://github.com/ijavad805/react-datepicker
+
+https://github.com/aliseyedabady/darvix-persian-date-kit
+https://darvix.ir/products/persian-date-kit
