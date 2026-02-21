@@ -1,7 +1,10 @@
-- Uload avatar - delete avatar (add filemanager service)
+- کار با میزهای کاربر
+
+
+- datetime picker????? 
 - birthdate problem.(should be converted)
 
+
+- Uload avatar - delete avatar (add filemanager service)
 - تعریف ساختار منو های جدید
 - دریافت تمامی منو های اپلیکشین
-- کار با میزهای کاربر
-- datetime picker????? 
