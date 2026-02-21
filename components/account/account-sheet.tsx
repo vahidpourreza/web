@@ -31,6 +31,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -205,14 +206,10 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
             </div>
           </div>
         ) : isError ? (
-          <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <p className="text-sm text-destructive">
-              {error?.message ?? 'خطا در بارگذاری اطلاعات'}
-            </p>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
-              تلاش مجدد
-            </Button>
-          </div>
+          <QueryErrorState
+            message={error?.message}
+            onRetry={() => refetch()}
+          />
         ) : profile ? (
           <>
             {/* Scrollable area — dir=ltr forces scrollbar to right side */}

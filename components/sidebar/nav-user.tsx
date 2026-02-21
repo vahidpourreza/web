@@ -22,6 +22,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { QueryErrorState } from '@/components/query-error-state';
 import {
   ChevronsUpDownIcon,
   SparklesIcon,
@@ -34,7 +35,7 @@ import {
 export function NavUser() {
   const { isMobile } = useSidebar();
   const { data: session } = useSession();
-  const { data: profile, isLoading } = useProfile();
+  const { data: profile, isLoading, isError, refetch } = useProfile();
   const [accountOpen, setAccountOpen] = useState(false);
   const qc = useQueryClient();
 
@@ -71,7 +72,15 @@ export function NavUser() {
     );
   }
 
-  if (!profile) return null;
+  if (isError || !profile) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <QueryErrorState onRetry={() => refetch()} />
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
 
   const displayName = `${profile.firstName} ${profile.lastName}`.trim();
   const initials = profile.firstName.charAt(0) + profile.lastName.charAt(0);

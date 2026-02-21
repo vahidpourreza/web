@@ -4,9 +4,4 @@
 - تعریف ساختار منو های جدید
 - دریافت تمامی منو های اپلیکشین
 - کار با میزهای کاربر
-
-
-
 - datetime picker????? 
--what if data not fetched? fails ....?
-- status code pages.
