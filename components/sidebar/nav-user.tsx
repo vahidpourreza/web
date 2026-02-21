@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCurrentUser } from '@/lib/auth';
 import { AccountSheet } from '@/components/account/account-sheet';
+import { useProfile } from '@/api/access/profile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -34,7 +34,7 @@ import {
 export function NavUser() {
   const { isMobile } = useSidebar();
   const { data: session } = useSession();
-  const { user, isLoading } = useCurrentUser();
+  const { data: profile, isLoading } = useProfile();
   const [accountOpen, setAccountOpen] = useState(false);
   const qc = useQueryClient();
 
@@ -71,10 +71,10 @@ export function NavUser() {
     );
   }
 
-  if (!user) return null;
+  if (!profile) return null;
 
-  const displayName = `${user.name} ${user.family}`.trim();
-  const initials = user.name.charAt(0) + user.family.charAt(0);
+  const displayName = `${profile.firstName} ${profile.lastName}`.trim();
+  const initials = profile.firstName.charAt(0) + profile.lastName.charAt(0);
 
   return (
     <SidebarMenu>
@@ -91,7 +91,7 @@ export function NavUser() {
               </Avatar>
               <div className="grid flex-1 text-start text-sm leading-tight">
                 <span className="truncate font-medium">{displayName}</span>
-                <span className="truncate text-xs">{user.mobile}</span>
+                <span className="truncate text-xs">{profile.mobile}</span>
               </div>
               <ChevronsUpDownIcon className="ms-auto size-4" />
             </SidebarMenuButton>
@@ -110,7 +110,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-medium">{displayName}</span>
-                  <span className="truncate text-xs">{user.mobile}</span>
+                  <span className="truncate text-xs">{profile.mobile}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

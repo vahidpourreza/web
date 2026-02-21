@@ -16,7 +16,7 @@ export function useProfile({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: profileKeys.detail(),
     queryFn: () => unwrapApiResponse(profileService.get()),
-    staleTime: 2 * 60 * 1000,
+    staleTime: Infinity,
     enabled,
   });
 }
