@@ -1,6 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
-import type { ApiResponse } from '@/types/api';
+import type { ApiResponse } from '@/api/types';
 
 // --- Client ---
 

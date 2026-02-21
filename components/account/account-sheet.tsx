@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { toast } from 'sonner';
 import {
   CameraIcon,
   EyeIcon,
@@ -15,8 +14,13 @@ import {
   UserIcon,
   UserCogIcon,
 } from 'lucide-react';
-import { profileService, type ProfileUserResponse } from '@/api/services/access/profile';
-import type { ApiResponse } from '@/types/api';
+import {
+  useProfile,
+  useUpdateFullName,
+  useSetUsername,
+  useUpdateDateOfBirth,
+  useChangePassword,
+} from '@/api/access/profile';
 import {
   Sheet,
   SheetContent,
@@ -68,14 +72,20 @@ interface AccountSheetProps {
 }
 
 export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
-  const [profile, setProfile] = useState<ProfileUserResponse | null>(null);
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('personal');
 
   // Password visibility toggles (UI-only, not form data)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // --- Data ---
+
+  const { data: profile, isLoading, isError, error, refetch } = useProfile({ enabled: open });
+  const updateFullName = useUpdateFullName();
+  const setUsername = useSetUsername();
+  const updateDateOfBirth = useUpdateDateOfBirth();
+  const changePassword = useChangePassword();
 
   // --- Forms ---
 
@@ -94,29 +104,16 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
 
-  // Fetch profile when sheet opens
+  // Reset forms when profile data loads
   useEffect(() => {
-    if (!open) return;
-
-    async function fetchProfile() {
-      setLoading(true);
-      const { ok, data, messages }: ApiResponse<ProfileUserResponse> = await profileService.get();
-      if (!ok || !data) {
-        toast.error(messages);
-      } else if (data.firstName) {
-        setProfile(data);
-        personalForm.reset({ firstName: data.firstName, lastName: data.lastName });
-        accountForm.reset({
-          username: data.username ?? '',
-          birthDate: data.birthDay ? (data.birthDay.split('T')[0] ?? '') : '',
-        });
-      }
-      setLoading(false);
-    }
-
-    fetchProfile();
+    if (!profile) return;
+    personalForm.reset({ firstName: profile.firstName, lastName: profile.lastName });
+    accountForm.reset({
+      username: profile.username ?? '',
+      birthDate: profile.birthDay ? (profile.birthDay.split('T')[0] ?? '') : '',
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [profile]);
 
   function handleOpenChange(value: boolean) {
     if (!value) {
@@ -132,55 +129,27 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
   // --- Submit Handlers ---
 
   async function onSubmitPersonal(data: PersonalForm) {
-    const { ok, messages } = await profileService.updateFullName({
+    await updateFullName.mutateAsync({
       firstName: data.firstName.trim(),
       lastName: data.lastName.trim(),
     });
-    if (!ok) {
-      toast.error(messages);
-    } else {
-      toast.success('مشخصات با موفقیت ویرایش شد.');
-      setProfile((prev) =>
-        prev ? { ...prev, firstName: data.firstName.trim(), lastName: data.lastName.trim() } : prev,
-      );
-    }
   }
 
   async function onSubmitAccount(data: AccountForm) {
     if (!hasUsername && data.username.trim()) {
-      const { ok, messages } = await profileService.setUserName({ username: data.username.trim() });
-      if (!ok) {
-        toast.error(messages);
-        return;
-      }
-      toast.success('نام کاربری با موفقیت ذخیره شد');
-      setProfile((prev) => (prev ? { ...prev, username: data.username.trim() } : prev));
+      await setUsername.mutateAsync({ username: data.username.trim() });
     }
-
     if (data.birthDate.trim()) {
-      const { ok, messages } = await profileService.updateDateOfBirth({
-        birthDay: data.birthDate.trim(),
-      });
-      if (!ok) {
-        toast.error(messages);
-        return;
-      }
-      toast.success('تاریخ تولد با موفقیت ذخیره شد');
-      setProfile((prev) => (prev ? { ...prev, birthDay: data.birthDate.trim() } : prev));
+      await updateDateOfBirth.mutateAsync({ birthDay: data.birthDate.trim() });
     }
   }
 
   async function onSubmitSecurity(data: SecurityForm) {
-    const { ok, messages } = await profileService.changePassword({
+    await changePassword.mutateAsync({
       currentPassword: data.currentPassword,
       newPassword: data.newPassword,
     });
-    if (!ok) {
-      toast.error(messages);
-    } else {
-      toast.success('رمز عبور با موفقیت تغییر کرد');
-      securityForm.reset();
-    }
+    securityForm.reset();
   }
 
   async function handleSave() {
@@ -206,7 +175,11 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
   const isSaving =
     personalForm.formState.isSubmitting ||
     accountForm.formState.isSubmitting ||
-    securityForm.formState.isSubmitting;
+    securityForm.formState.isSubmitting ||
+    updateFullName.isPending ||
+    setUsername.isPending ||
+    updateDateOfBirth.isPending ||
+    changePassword.isPending;
   const initials = profile ? profile.firstName.charAt(0) + profile.lastName.charAt(0) : '';
   const hasUsername = !!profile?.username;
 
@@ -218,7 +191,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
           <SheetDescription>مشاهده و ویرایش اطلاعات پروفایل</SheetDescription>
         </SheetHeader>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex flex-col gap-6 p-4">
             <div className="flex flex-col items-center gap-3">
               <Skeleton className="h-20 w-20 rounded-full" />
@@ -230,6 +203,15 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
               <Skeleton className="h-9 w-full" />
               <Skeleton className="h-9 w-full" />
             </div>
+          </div>
+        ) : isError ? (
+          <div className="flex flex-col items-center gap-3 p-6 text-center">
+            <p className="text-sm text-destructive">
+              {error?.message ?? 'خطا در بارگذاری اطلاعات'}
+            </p>
+            <Button variant="outline" size="sm" onClick={() => refetch()}>
+              تلاش مجدد
+            </Button>
           </div>
         ) : profile ? (
           <>

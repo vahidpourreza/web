@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AuthProvider } from '@/providers/auth-provider';
+import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { DirectionProvider } from '@/components/ui/direction';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -31,8 +32,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <AuthProvider>
-              <TooltipProvider>{children}</TooltipProvider>
-              <Toaster position="bottom-center" dir="rtl" />
+              <QueryProvider>
+                <TooltipProvider>{children}</TooltipProvider>
+                <Toaster position="bottom-center" dir="rtl" />
+              </QueryProvider>
             </AuthProvider>
           </ThemeProvider>
         </DirectionProvider>
