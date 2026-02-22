@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { QueryErrorState } from '@/components/query-error-state';
+import { ModeToggle } from '@/components/theme/mode-toggle';
 import {
   ChevronsUpDownIcon,
   SparklesIcon,
@@ -149,6 +150,10 @@ export function NavUser() {
                 اعلان‌ها
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <div className="flex justify-center px-2 py-1.5">
+              <ModeToggle />
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant="destructive"

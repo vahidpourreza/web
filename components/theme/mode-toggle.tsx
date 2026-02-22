@@ -12,11 +12,11 @@ export function ModeToggle() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
 
   return (
-    <div className="bg-muted flex items-center gap-1 rounded-full p-1">
+    <div className="bg-muted flex w-full items-center justify-between gap-1 rounded-full p-1">
       <button
         onClick={() => setTheme("light")}
         className={cn(
-          "cursor-pointer rounded-full p-1.5 transition-colors",
+          "flex-1 cursor-pointer rounded-full p-1.5 transition-colors flex justify-center",
           mounted && theme === "light"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
@@ -28,7 +28,7 @@ export function ModeToggle() {
       <button
         onClick={() => setTheme("system")}
         className={cn(
-          "cursor-pointer rounded-full p-1.5 transition-colors",
+          "flex-1 cursor-pointer rounded-full p-1.5 transition-colors flex justify-center",
           mounted && theme === "system"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"
@@ -40,7 +40,7 @@ export function ModeToggle() {
       <button
         onClick={() => setTheme("dark")}
         className={cn(
-          "cursor-pointer rounded-full p-1.5 transition-colors",
+          "flex-1 cursor-pointer rounded-full p-1.5 transition-colors flex justify-center",
           mounted && theme === "dark"
             ? "bg-background text-foreground shadow-sm"
             : "text-muted-foreground hover:text-foreground"

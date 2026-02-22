@@ -2,7 +2,7 @@ import { AppSidebar } from '@/components/sidebar/app-sidebar';
 import { DynamicBreadcrumb } from '@/components/sidebar/dynamic-breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { ModeToggle } from '@/components/theme/mode-toggle';
+
 
 export default function AppLayout({
   children,
@@ -21,9 +21,6 @@ export default function AppLayout({
               className="me-2 data-vertical:h-4 data-vertical:self-auto"
             />
             <DynamicBreadcrumb />
-          </div>
-          <div className="ms-auto me-4">
-            <ModeToggle />
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</main>
