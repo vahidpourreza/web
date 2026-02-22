@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { PersianDatePicker, PersianDateRangePicker } from '@/components/ui/persian-datepicker';
-import type { PersianDateRange } from '@/components/ui/persian-datepicker';
+import { PersianDatePicker, PersianDateRangePicker } from '@/components/common/persian-datepicker';
+import type { PersianDateRange } from '@/components/common/persian-datepicker';
 
 function ErrorThrower(): never {
   throw new Error('خطایی در لود کردن صفحه تست پیش آمد');
@@ -17,6 +17,7 @@ export default function TestPage() {
   const [singleDate, setSingleDate] = useState<Date | null>(null);
   const [dateWithTime, setDateWithTime] = useState<Date | null>(null);
   const [dateRange, setDateRange] = useState<PersianDateRange>({ start: null, end: null });
+  const [multipleDates, setMultipleDates] = useState<Date[] | null>(null);
   const [inlineDate, setInlineDate] = useState<Date | null>(new Date());
 
   if (showError) {
@@ -134,7 +135,24 @@ export default function TestPage() {
             )}
           </div>
 
-          {/* 4. Date range picker (single input) */}
+          {/* 4. Multiple date picker */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">انتخاب چند تاریخ</h3>
+            <PersianDatePicker
+              value={multipleDates}
+              onChange={(d) => setMultipleDates(d as Date[])}
+              placeholder="تاریخ‌ها را انتخاب کنید"
+              multiple
+              maxSelections={5}
+            />
+            {multipleDates && multipleDates.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {multipleDates.length} تاریخ انتخاب شده
+              </p>
+            )}
+          </div>
+
+          {/* 5. Date range picker (single input) */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">انتخاب بازه تاریخ (تک ورودی)</h3>
             <PersianDateRangePicker
@@ -145,7 +163,7 @@ export default function TestPage() {
             />
           </div>
 
-          {/* 5. Inline calendar */}
+          {/* 6. Inline calendar */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">تقویم درون‌خطی</h3>
             <PersianDatePicker

@@ -7,12 +7,22 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 const prevIcon = <ChevronRightIcon className="size-4" />;
 const nextIcon = <ChevronLeftIcon className="size-4" />;
 
+const monthLabels = [
+  'فروردین', 'اردیبهشت', 'خرداد', 'تیر',
+  'مرداد', 'شهریور', 'مهر', 'آبان',
+  'آذر', 'دی', 'بهمن', 'اسفند',
+];
+
+const weekdays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+
+const defaults = { prevIcon, nextIcon, monthLabels, weekdays };
+
 function PersianDatePickerUI(props: PersianDatePickerProps) {
-  return <PersianDatePicker prevIcon={prevIcon} nextIcon={nextIcon} {...props} />;
+  return <PersianDatePicker {...defaults} {...props} />;
 }
 
 function PersianDateRangePickerUI(props: PersianDateRangePickerProps) {
-  return <PersianDateRangePicker prevIcon={prevIcon} nextIcon={nextIcon} {...props} />;
+  return <PersianDateRangePicker {...defaults} {...props} />;
 }
 
 export { PersianDatePickerUI as PersianDatePicker, PersianDateRangePickerUI as PersianDateRangePicker };
