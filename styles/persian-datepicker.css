@@ -20,14 +20,25 @@
   --dvx-pdp-dayHover: oklch(0.42 0.18 266 / 12%);
 }
 
-/* Match border-radius to project design tokens */
+/* Match sizing to project design tokens */
+.dvx-pdp {
+  font-size: 0.875rem; /* text-sm (14px) to match shadcn */
+}
 .dvx-pdp__input {
   border-radius: var(--radius);
+  font-size: 0.875rem;
+  height: 2.25rem; /* h-9, matching shadcn input */
+  padding: 0.25rem 0.625rem;
 }
 .dvx-pdp__button,
 .dvx-pdp__nav,
 .dvx-pdp__day {
   border-radius: var(--radius);
+}
+.dvx-pdp__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .dvx-pdp__calendar {
   border-radius: calc(var(--radius) + 8px);

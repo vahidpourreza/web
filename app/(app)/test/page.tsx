@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { PersianDatePicker, PersianDateRangePicker } from 'persian-date-kit';
-import type { PersianDateRange } from 'persian-date-kit';
+import { PersianDatePicker, PersianDateRangePicker } from '@/components/ui/persian-datepicker';
+import type { PersianDateRange } from '@/components/ui/persian-datepicker';
 
 function ErrorThrower(): never {
   throw new Error('خطایی در لود کردن صفحه تست پیش آمد');
@@ -134,7 +134,18 @@ export default function TestPage() {
             )}
           </div>
 
-          {/* 4. Inline calendar */}
+          {/* 4. Date range picker (single input) */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">انتخاب بازه تاریخ (تک ورودی)</h3>
+            <PersianDateRangePicker
+              value={dateRange}
+              onChange={setDateRange}
+              inputVariant="single"
+              placeholder="بازه تاریخ را انتخاب کنید"
+            />
+          </div>
+
+          {/* 5. Inline calendar */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-muted-foreground">تقویم درون‌خطی</h3>
             <PersianDatePicker
