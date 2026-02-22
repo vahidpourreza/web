@@ -13,3 +13,4 @@ export { registrationService } from './access/registration';
 export { smsService } from './access/sms';
 export { tenantService } from './access/tenant';
 export { workspaceService } from './access/workspace';
+export { fileManagerService } from './file-manager';

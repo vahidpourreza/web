@@ -128,4 +128,57 @@ export async function apiDelete<T>(url: string, data?: unknown): Promise<ApiResp
   }
 }
 
+export async function apiPostFormData<T>(url: string, formData: FormData): Promise<ApiResponse<T>> {
+  try {
+    const response = await apiClient.post<T>(url, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
+}
+
+export async function apiGetBlob(url: string, params?: object): Promise<ApiResponse<Blob>> {
+  try {
+    const response = await apiClient.get<Blob>(url, { params, responseType: 'blob' });
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
+}
+
+export async function apiPostBlob(url: string, data?: unknown): Promise<ApiResponse<Blob>> {
+  try {
+    const response = await apiClient.post<Blob>(url, data, { responseType: 'blob' });
+    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+  } catch (err) {
+    const axiosErr = err as AxiosError;
+    const allMessages = extractMessages(err);
+    return {
+      ok: false,
+      data: null,
+      status: axiosErr.response?.status ?? 0,
+      allMessages,
+      messages: allMessages.join(' '),
+    };
+  }
+}
+
 export default apiClient;
