@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { fileManagerService, FileCategory } from './service';
 import { fileManagerKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   GetUploadProgressRequest,
   GetFileMetadataRequest,
@@ -46,7 +46,7 @@ export function useDownloadFile() {
   return useMutation({
     mutationFn: (data: DownloadFileRequest) =>
       unwrapApiResponse(fileManagerService.downloadFile(data)),
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -54,7 +54,7 @@ export function useDownloadArchive() {
   return useMutation({
     mutationFn: (data: DownloadArchiveRequest) =>
       unwrapApiResponse(fileManagerService.downloadArchive(data)),
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -144,7 +144,7 @@ export function useUploadFile() {
         const uploadError = err instanceof Error ? err : new Error('خطای ناشناخته');
         setError(uploadError);
         setStatus('error');
-        toast.error(uploadError.message);
+        toastApiError(uploadError);
         throw uploadError;
       }
     },

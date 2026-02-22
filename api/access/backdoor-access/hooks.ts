@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { backdoorAccessService } from './service';
 import { backdoorAccessKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   SetBackdoorAccessRequest,
   DeleteFullBackdoorAccessRequest,
@@ -41,7 +41,7 @@ export function useSetBackdoorAccess() {
       qc.invalidateQueries({ queryKey: backdoorAccessKeys.all });
       toast.success('دسترسی backdoor با موفقیت تنظیم شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -54,6 +54,6 @@ export function useDeleteFullBackdoorAccess() {
       qc.invalidateQueries({ queryKey: backdoorAccessKeys.all });
       toast.success('دسترسی backdoor با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

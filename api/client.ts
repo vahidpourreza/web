@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import type { ApiResponse } from '@/api/types';
 
 // --- Client ---
@@ -37,6 +38,25 @@ apiClient.interceptors.response.use(
         window.location.href = '/login';
       }
     }
+
+    if (error.response?.status === 500) {
+      const data = error.response.data as { id?: string } | undefined;
+      const traceId = data?.id;
+      toast.error('خطای سرور', {
+        duration: 5000,
+        description: traceId ? `کد پیگیری: ${traceId}` : undefined,
+        action: traceId
+          ? {
+              label: 'کپی',
+              onClick: () => {
+                navigator.clipboard.writeText(traceId);
+                toast.info('کد پیگیری کپی شد');
+              },
+            }
+          : undefined,
+      });
+    }
+
     return Promise.reject(error);
   },
 );
@@ -56,10 +76,11 @@ function extractMessages(err: unknown): string[] {
     return messages;
   }
 
+  console.log(axiosErr.response);
   const status = axiosErr.response?.status;
   if (status === 403) return ['شما دسترسی لازم برای انجام این عملیات را ندارید'];
   if (status === 404) return ['مورد درخواستی یافت نشد'];
-  if (status === 500) return ['خطای سرور - لطفاً دوباره تلاش کنید'];
+  if (status === 500) return ['خطای سرور'];
 
   return ['خطای ناشناخته'];
 }
@@ -69,7 +90,13 @@ function extractMessages(err: unknown): string[] {
 export async function apiGet<T>(url: string, params?: object): Promise<ApiResponse<T>> {
   try {
     const response = await apiClient.get<T>(url, { params });
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -86,7 +113,13 @@ export async function apiGet<T>(url: string, params?: object): Promise<ApiRespon
 export async function apiPost<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
   try {
     const response = await apiClient.post<T>(url, data);
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -103,7 +136,13 @@ export async function apiPost<T>(url: string, data?: unknown): Promise<ApiRespon
 export async function apiPut<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
   try {
     const response = await apiClient.put<T>(url, data);
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -120,7 +159,13 @@ export async function apiPut<T>(url: string, data?: unknown): Promise<ApiRespons
 export async function apiDelete<T>(url: string, data?: unknown): Promise<ApiResponse<T>> {
   try {
     const response = await apiClient.delete<T>(url, { data });
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -139,7 +184,13 @@ export async function apiPostFormData<T>(url: string, formData: FormData): Promi
     const response = await apiClient.post<T>(url, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -156,7 +207,13 @@ export async function apiPostFormData<T>(url: string, formData: FormData): Promi
 export async function apiGetBlob(url: string, params?: object): Promise<ApiResponse<Blob>> {
   try {
     const response = await apiClient.get<Blob>(url, { params, responseType: 'blob' });
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);
@@ -173,7 +230,13 @@ export async function apiGetBlob(url: string, params?: object): Promise<ApiRespo
 export async function apiPostBlob(url: string, data?: unknown): Promise<ApiResponse<Blob>> {
   try {
     const response = await apiClient.post<Blob>(url, data, { responseType: 'blob' });
-    return { ok: true, data: response.data, status: response.status, allMessages: [], messages: '' };
+    return {
+      ok: true,
+      data: response.data,
+      status: response.status,
+      allMessages: [],
+      messages: '',
+    };
   } catch (err) {
     const axiosErr = err as AxiosError;
     const allMessages = extractMessages(err);

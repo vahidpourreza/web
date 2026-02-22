@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { workspaceService } from './service';
 import { workspaceKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   AddDeskRequest,
   SwapDeskRequest,
@@ -70,7 +70,7 @@ export function useAddDesk() {
       qc.invalidateQueries({ queryKey: workspaceKeys.all });
       toast.success('میز با موفقیت اضافه شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -83,7 +83,7 @@ export function useSwapDesk() {
       qc.invalidateQueries({ queryKey: workspaceKeys.all });
       toast.success('میز با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -96,7 +96,7 @@ export function useUpdateDesk() {
       qc.invalidateQueries({ queryKey: workspaceKeys.all });
       toast.success('میز با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -108,7 +108,7 @@ export function useToggleLayout() {
       qc.invalidateQueries({ queryKey: workspaceKeys.space() });
       toast.success('چیدمان با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -121,6 +121,6 @@ export function useDeleteDesk() {
       qc.invalidateQueries({ queryKey: workspaceKeys.all });
       toast.success('میز با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

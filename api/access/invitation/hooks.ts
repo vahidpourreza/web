@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { invitationService } from './service';
 import { invitationKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateInvitationRequest,
   RevokeInvitationRequest,
@@ -43,7 +43,7 @@ export function useCreateInvitation() {
       qc.invalidateQueries({ queryKey: invitationKeys.all });
       toast.success('دعوتنامه با موفقیت ارسال شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -56,7 +56,7 @@ export function useRevokeInvitation() {
       qc.invalidateQueries({ queryKey: invitationKeys.all });
       toast.success('دعوتنامه با موفقیت لغو شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -69,7 +69,7 @@ export function useAcceptInvitation() {
       qc.invalidateQueries({ queryKey: invitationKeys.all });
       toast.success('دعوتنامه با موفقیت پذیرفته شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -82,6 +82,6 @@ export function useResendInvitation() {
       qc.invalidateQueries({ queryKey: invitationKeys.all });
       toast.success('دعوتنامه با موفقیت مجدداً ارسال شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

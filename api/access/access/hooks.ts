@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { accessService } from './service';
 import { accessKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   SetUserCenterMembershipRequest,
   GetUserActiveTenantsRequest,
@@ -44,6 +44,6 @@ export function useSetUserCenterMembership() {
       qc.invalidateQueries({ queryKey: accessKeys.all });
       toast.success('دسترسی کاربر با موفقیت تنظیم شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

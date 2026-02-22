@@ -40,6 +40,8 @@ import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { PersianDatePicker } from '@/components/common/persian-datepicker';
+import { usePersianDatePickerController } from 'persian-date-kit/react-hook-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -52,7 +54,7 @@ const personalSchema = z.object({
 
 const accountSchema = z.object({
   username: z.string().min(1, 'نام کاربری الزامی است'),
-  birthDate: z.string().min(1, 'تاریخ تولد الزامی است'),
+  birthDate: z.date({ required_error: 'تاریخ تولد الزامی است' }),
 });
 
 const securitySchema = z
@@ -105,12 +107,18 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
 
   const accountForm = useForm<AccountForm>({
     resolver: zodResolver(accountSchema),
-    defaultValues: { username: '', birthDate: '' },
+    defaultValues: { username: '', birthDate: undefined },
   });
 
   const securityForm = useForm<SecurityForm>({
     resolver: zodResolver(securitySchema),
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
+  });
+
+  const { pickerProps: birthDatePickerProps } = usePersianDatePickerController({
+    name: 'birthDate',
+    control: accountForm.control,
+    rules: { required: 'تاریخ تولد الزامی است' },
   });
 
   // Reset forms when profile data loads
@@ -119,7 +127,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     personalForm.reset({ firstName: profile.firstName, lastName: profile.lastName });
     accountForm.reset({
       username: profile.username ?? '',
-      birthDate: profile.birthDay ? (profile.birthDay.split('T')[0] ?? '') : '',
+      birthDate: profile.birthDay ? new Date(profile.birthDay) : undefined,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
@@ -148,8 +156,8 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     if (!hasUsername && data.username.trim()) {
       await setUsername.mutateAsync({ username: data.username.trim() });
     }
-    if (data.birthDate.trim()) {
-      await updateDateOfBirth.mutateAsync({ birthDay: data.birthDate.trim() });
+    if (data.birthDate) {
+      await updateDateOfBirth.mutateAsync({ birthDay: data.birthDate.toISOString() });
     }
   }
 
@@ -300,7 +308,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                 </div>
 
                 {/* Tabs */}
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <Tabs value={activeTab} onValueChange={setActiveTab} activationMode="manual" className="w-full">
                   <TabsList className="w-full">
                     <TabsTrigger value="personal" className="flex-1">
                       <UserIcon className="size-3.5" />
@@ -383,14 +391,11 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                     <Separator />
 
                     <div className="space-y-2.5">
-                      <Label htmlFor="birthDate">تاریخ تولد</Label>
-                      <Input
-                        id="birthDate"
-                        {...accountForm.register('birthDate')}
-                        placeholder="1380/01/15"
-                        dir="ltr"
-                        className="text-start"
-                        aria-invalid={!!accountForm.formState.errors.birthDate}
+                      <Label>تاریخ تولد</Label>
+                      <PersianDatePicker
+                        {...birthDatePickerProps}
+                        placeholder="تاریخ تولد را انتخاب کنید"
+                        popover={{ portal: false }}
                       />
                       {accountForm.formState.errors.birthDate && (
                         <p className="text-xs text-destructive">

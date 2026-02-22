@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { centerService } from './service';
 import { centerKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   AddBranchRequest,
   AddRepositoryRequest,
@@ -92,7 +92,7 @@ export function useAddBranch() {
       qc.invalidateQueries({ queryKey: centerKeys.all });
       toast.success('شاخه با موفقیت اضافه شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -105,7 +105,7 @@ export function useAddRepository() {
       qc.invalidateQueries({ queryKey: centerKeys.all });
       toast.success('مخزن با موفقیت اضافه شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -118,7 +118,7 @@ export function useAddSite() {
       qc.invalidateQueries({ queryKey: centerKeys.all });
       toast.success('سایت با موفقیت اضافه شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -131,7 +131,7 @@ export function useRenameCenter() {
       qc.invalidateQueries({ queryKey: centerKeys.all });
       toast.success('نام با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -144,6 +144,6 @@ export function useDeleteCenter() {
       qc.invalidateQueries({ queryKey: centerKeys.all });
       toast.success('مرکز با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

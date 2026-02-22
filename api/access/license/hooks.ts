@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { licenseService } from './service';
 import { licenseKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateStandardLicenseRequest,
   CreateUnlimitedLicenseRequest,
@@ -71,7 +71,7 @@ export function useCreateStandardLicense() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('لایسنس استاندارد با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -84,7 +84,7 @@ export function useCreateUnlimitedLicense() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('لایسنس نامحدود با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -97,7 +97,7 @@ export function useSetDefaultLicense() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('لایسنس پیش‌فرض با موفقیت تنظیم شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -110,7 +110,7 @@ export function useUpdateLicenseContent() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('محتوای لایسنس با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -123,7 +123,7 @@ export function useUpdateLicense() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('لایسنس با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -136,6 +136,6 @@ export function useDeleteLicense() {
       qc.invalidateQueries({ queryKey: licenseKeys.all });
       toast.success('لایسنس با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

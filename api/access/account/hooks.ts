@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { accountService } from './service';
 import { accountKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateSuperAdminRequest,
   ChangeStatusRequest,
@@ -123,7 +123,7 @@ export function useCreateSuperAdmin() {
       qc.invalidateQueries({ queryKey: accountKeys.all });
       toast.success('سوپر ادمین با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -136,7 +136,7 @@ export function useChangeUserStatus() {
       qc.invalidateQueries({ queryKey: accountKeys.all });
       toast.success('وضعیت با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -149,7 +149,7 @@ export function useUpdateUserProfile() {
       qc.invalidateQueries({ queryKey: accountKeys.all });
       toast.success('مشخصات کاربر با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -160,7 +160,7 @@ export function useAccountChangePassword() {
     onSuccess: () => {
       toast.success('رمز عبور با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -173,6 +173,6 @@ export function useChangeAccountStatus() {
       qc.invalidateQueries({ queryKey: accountKeys.all });
       toast.success('وضعیت حساب با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

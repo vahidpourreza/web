@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { adminAccessService } from './service';
 import { adminAccessKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateAdminAccessRequest,
   ModifyNavigationsRequest,
@@ -51,7 +51,7 @@ export function useCreateAdminAccess() {
       qc.invalidateQueries({ queryKey: adminAccessKeys.all });
       toast.success('دسترسی مدیر با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -64,7 +64,7 @@ export function useModifyAdminNavigations() {
       qc.invalidateQueries({ queryKey: adminAccessKeys.all });
       toast.success('مسیریابی با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -77,6 +77,6 @@ export function useDeleteAdminAccess() {
       qc.invalidateQueries({ queryKey: adminAccessKeys.all });
       toast.success('دسترسی مدیر با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

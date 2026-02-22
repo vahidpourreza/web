@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { otpService } from './service';
 import { otpKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   GenerateOtpRequest,
   GenerateOtpByInvitationCodeRequest,
@@ -31,7 +31,7 @@ export function useGenerateOtp() {
     onSuccess: () => {
       toast.success('کد تایید با موفقیت ارسال شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -42,7 +42,7 @@ export function useGenerateOtpByInvitationCode() {
     onSuccess: () => {
       toast.success('کد تایید با موفقیت ارسال شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -53,6 +53,6 @@ export function useVerifyOtp() {
     onSuccess: () => {
       toast.success('کد تایید با موفقیت تایید شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

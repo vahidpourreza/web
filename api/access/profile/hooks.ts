@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { profileService } from './service';
 import { profileKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   UpdateFullNameRequest,
   SetUserNameRequest,
@@ -31,7 +31,7 @@ export function useUpdateFullName() {
       qc.invalidateQueries({ queryKey: profileKeys.all });
       toast.success('مشخصات با موفقیت ویرایش شد.');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -44,7 +44,7 @@ export function useSetUsername() {
       qc.invalidateQueries({ queryKey: profileKeys.all });
       toast.success('نام کاربری با موفقیت ذخیره شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -57,7 +57,7 @@ export function useUpdateDateOfBirth() {
       qc.invalidateQueries({ queryKey: profileKeys.all });
       toast.success('تاریخ تولد با موفقیت ذخیره شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -68,7 +68,7 @@ export function useChangePassword() {
     onSuccess: () => {
       toast.success('رمز عبور با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -81,6 +81,6 @@ export function useChangeAvatar() {
       qc.invalidateQueries({ queryKey: profileKeys.all });
       toast.success('تصویر پروفایل با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

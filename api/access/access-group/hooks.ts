@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { accessGroupService } from './service';
 import { accessGroupKeys } from './keys';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateAccessGroupRequest,
   ModifyAccessGroupRequest,
@@ -55,7 +55,7 @@ export function useCreateAccessGroup() {
       qc.invalidateQueries({ queryKey: accessGroupKeys.all });
       toast.success('گروه دسترسی با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -68,7 +68,7 @@ export function useModifyAccessGroup() {
       qc.invalidateQueries({ queryKey: accessGroupKeys.all });
       toast.success('گروه دسترسی با موفقیت ویرایش شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -81,6 +81,6 @@ export function useDeleteAccessGroup() {
       qc.invalidateQueries({ queryKey: accessGroupKeys.all });
       toast.success('گروه دسترسی با موفقیت حذف شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }

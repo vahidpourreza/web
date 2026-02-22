@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { registrationService } from './service';
-import { unwrapApiResponse, unwrapVoidResponse } from '@/api/utils';
+import { unwrapApiResponse, unwrapVoidResponse, toastApiError } from '@/api/utils';
 import type {
   CreateInvitedUserRequest,
   CreateTenantAdminRequest,
@@ -18,7 +18,7 @@ export function useCreateInvitedUser() {
     onSuccess: () => {
       toast.success('کاربر با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -29,7 +29,7 @@ export function useCreateTenantAdmin() {
     onSuccess: () => {
       toast.success('مدیر سازمان با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -40,7 +40,7 @@ export function useCreateTenantStaff() {
     onSuccess: () => {
       toast.success('کارمند سازمان با موفقیت ایجاد شد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
 
@@ -51,6 +51,6 @@ export function useForgetPassword() {
     onSuccess: () => {
       toast.success('رمز عبور با موفقیت تغییر کرد');
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toastApiError(e),
   });
 }
