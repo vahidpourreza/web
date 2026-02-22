@@ -44,7 +44,8 @@ apiClient.interceptors.response.use(
 // --- Extract error messages ---
 
 function extractMessages(err: unknown): string[] {
-  const data = (err as AxiosError).response?.data;
+  const axiosErr = err as AxiosError;
+  const data = axiosErr.response?.data;
 
   if (Array.isArray(data) && data.length) {
     return data;
@@ -54,6 +55,11 @@ function extractMessages(err: unknown): string[] {
   if (messages?.length) {
     return messages;
   }
+
+  const status = axiosErr.response?.status;
+  if (status === 403) return ['شما دسترسی لازم برای انجام این عملیات را ندارید'];
+  if (status === 404) return ['مورد درخواستی یافت نشد'];
+  if (status === 500) return ['خطای سرور - لطفاً دوباره تلاش کنید'];
 
   return ['خطای ناشناخته'];
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -11,6 +11,7 @@ import {
   InfoIcon,
   Loader2Icon,
   LockKeyholeIcon,
+  Trash2Icon,
   UserIcon,
   UserCogIcon,
 } from 'lucide-react';
@@ -20,7 +21,11 @@ import {
   useSetUsername,
   useUpdateDateOfBirth,
   useChangePassword,
+  useChangeAvatar,
 } from '@/api/access/profile';
+import { useUploadFile } from '@/api/file-manager';
+import { FileCategory, TransformationPreset } from '@/api/file-manager/service';
+import { buildCdnPresetUrl } from '@/api/file-manager/cdn';
 import {
   Sheet,
   SheetContent,
@@ -29,7 +34,7 @@ import {
   SheetDescription,
 } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
@@ -87,6 +92,9 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
   const setUsername = useSetUsername();
   const updateDateOfBirth = useUpdateDateOfBirth();
   const changePassword = useChangePassword();
+  const changeAvatar = useChangeAvatar();
+  const uploader = useUploadFile();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // --- Forms ---
 
@@ -153,6 +161,25 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     securityForm.reset();
   }
 
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const result = await uploader.upload(file, {
+        fileCategory: FileCategory.Avatar,
+        isGlobal: true,
+      });
+      await changeAvatar.mutateAsync({ avatarId: result.fileId });
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      uploader.reset();
+    }
+  }
+
+  async function handleAvatarRemove() {
+    await changeAvatar.mutateAsync({ avatarId: null });
+  }
+
   async function handleSave() {
     switch (activeTab) {
       case 'personal':
@@ -181,8 +208,17 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     setUsername.isPending ||
     updateDateOfBirth.isPending ||
     changePassword.isPending;
+  const isAvatarBusy = uploader.isUploading || changeAvatar.isPending;
   const initials = profile ? profile.firstName.charAt(0) + profile.lastName.charAt(0) : '';
   const hasUsername = !!profile?.username;
+  const hasAvatar = !!profile?.avatarId;
+  const avatarUrl = hasAvatar
+    ? buildCdnPresetUrl({
+        category: FileCategory.Avatar,
+        fileId: profile!.avatarId!,
+        preset: TransformationPreset.Medium,
+      })
+    : undefined;
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
@@ -218,15 +254,29 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                 {/* Avatar Section */}
                 <div className="flex flex-col items-center gap-3">
                   <div className="relative">
-                    <Avatar className="h-20 w-20 text-lg">
+                    <Avatar key={profile.avatarId ?? 'no-avatar'} className="h-20 w-20 text-lg">
+                      {avatarUrl && <AvatarImage src={avatarUrl} alt={`${profile.firstName} ${profile.lastName}`} />}
                       <AvatarFallback className="text-lg">{initials}</AvatarFallback>
                     </Avatar>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAvatarUpload}
+                    />
                     <button
                       type="button"
                       className="absolute bottom-0 end-0 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm cursor-pointer"
                       title="تغییر عکس پروفایل"
+                      disabled={isAvatarBusy}
+                      onClick={() => fileInputRef.current?.click()}
                     >
-                      <CameraIcon className="h-3.5 w-3.5" />
+                      {isAvatarBusy ? (
+                        <Loader2Icon className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <CameraIcon className="h-3.5 w-3.5" />
+                      )}
                     </button>
                   </div>
                   <div className="text-center">
@@ -235,6 +285,18 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                     </p>
                     <p className="text-xs text-muted-foreground">{profile.mobile}</p>
                   </div>
+                  {hasAvatar && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive"
+                      onClick={handleAvatarRemove}
+                      disabled={isAvatarBusy}
+                    >
+                      <Trash2Icon className="size-3.5" />
+                      حذف تصویر
+                    </Button>
+                  )}
                 </div>
 
                 {/* Tabs */}

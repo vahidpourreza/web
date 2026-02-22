@@ -7,6 +7,7 @@ export type {
   SetUserNameRequest,
   UpdateDateOfBirthRequest,
   ChangeProfilePasswordRequest,
+  ChangeAvatarRequest,
   GetProfileRequest,
 } from './service';
-export { useProfile, useUpdateFullName, useSetUsername, useUpdateDateOfBirth, useChangePassword } from './hooks';
+export { useProfile, useUpdateFullName, useSetUsername, useUpdateDateOfBirth, useChangePassword, useChangeAvatar } from './hooks';

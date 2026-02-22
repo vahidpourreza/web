@@ -20,6 +20,10 @@ export interface UpdateDateOfBirthRequest {
   birthDay: string;
 }
 
+export interface ChangeAvatarRequest {
+  avatarId: string | null;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GetProfileRequest {}
 
@@ -48,6 +52,7 @@ export interface ProfileUserResponse {
   isRoot: boolean;
   birthDay: string;
   brokerId: string;
+  avatarId: string | null;
 }
 
 export interface CurrentUserProfileResponse {
@@ -62,6 +67,7 @@ export interface CurrentUserProfileResponse {
   joinedTenantsCount: number;
   joinedCentersCount: number;
   birthDay: string;
+  avatarId: string | null;
   tenants: CurrentUserTenantShortProfileResponse[];
 }
 
@@ -106,6 +112,9 @@ export const profileService = {
 
   updateDateOfBirth: (data: UpdateDateOfBirthRequest) =>
     apiPut<void>(`${BASE}/UpdateDateOfBirth`, data),
+
+  changeAvatar: (data: ChangeAvatarRequest) =>
+    apiPut<void>(`${BASE}/ChangeAvatar`, data),
 
   get: (data?: GetProfileRequest) =>
     apiGet<ProfileUserResponse>(`${BASE}/Get`, data),

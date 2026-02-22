@@ -10,6 +10,7 @@ import type {
   SetUserNameRequest,
   UpdateDateOfBirthRequest,
   ChangeProfilePasswordRequest,
+  ChangeAvatarRequest,
 } from './service';
 
 export function useProfile({ enabled = true }: { enabled?: boolean } = {}) {
@@ -66,6 +67,19 @@ export function useChangePassword() {
       unwrapVoidResponse(profileService.changePassword(data)),
     onSuccess: () => {
       toast.success('رمز عبور با موفقیت تغییر کرد');
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
+export function useChangeAvatar() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: ChangeAvatarRequest) =>
+      unwrapVoidResponse(profileService.changeAvatar(data)),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: profileKeys.all });
+      toast.success('تصویر پروفایل با موفقیت تغییر کرد');
     },
     onError: (e: Error) => toast.error(e.message),
   });

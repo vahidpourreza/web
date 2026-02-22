@@ -5,6 +5,8 @@ import { signOut, useSession } from 'next-auth/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AccountSheet } from '@/components/account/account-sheet';
 import { useProfile } from '@/api/access/profile';
+import { FileCategory, TransformationPreset } from '@/api/file-manager/service';
+import { buildCdnPresetUrl } from '@/api/file-manager/cdn';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -85,6 +87,13 @@ export function NavUser() {
 
   const displayName = `${profile.firstName} ${profile.lastName}`.trim();
   const initials = profile.firstName.charAt(0) + profile.lastName.charAt(0);
+  const avatarUrl = profile.avatarId
+    ? buildCdnPresetUrl({
+        category: FileCategory.Avatar,
+        fileId: profile.avatarId,
+        preset: TransformationPreset.Small,
+      })
+    : undefined;
 
   return (
     <SidebarMenu>
@@ -95,9 +104,9 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="rounded-lg">
-                <AvatarImage src="/avatars/shadcn.png" alt={displayName} />
-                <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+              <Avatar key={profile.avatarId ?? 'no-avatar'}>
+                {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} />}
+                <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-start text-sm leading-tight">
                 <span className="truncate font-medium">{displayName}</span>
@@ -114,9 +123,9 @@ export function NavUser() {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                <Avatar className="rounded-lg">
-                  <AvatarImage src="/avatars/shadcn.png" alt={displayName} />
-                  <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                <Avatar key={profile.avatarId ?? 'no-avatar'}>
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} />}
+                  <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-start text-sm leading-tight">
                   <span className="truncate font-medium">{displayName}</span>
