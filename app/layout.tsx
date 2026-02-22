@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme/theme-provider';
 import { DirectionProvider } from '@/components/ui/direction';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
+import { OfflineBanner } from '@/components/offline-banner';
 import { iranSansFaNum } from '@/lib/fonts';
 import './globals.css';
 
@@ -34,6 +35,7 @@ export default function RootLayout({
             <AuthProvider>
               <QueryProvider>
                 <TooltipProvider>{children}</TooltipProvider>
+                <OfflineBanner />
                 <Toaster position="bottom-center" dir="rtl" />
               </QueryProvider>
             </AuthProvider>
