@@ -41,7 +41,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { PersianDatePicker } from '@/components/common/persian-datepicker';
-import { usePersianDatePickerController } from 'persian-date-kit/react-hook-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -54,7 +53,6 @@ const personalSchema = z.object({
 
 const accountSchema = z.object({
   username: z.string().min(1, 'نام کاربری الزامی است'),
-  birthDate: z.date({ required_error: 'تاریخ تولد الزامی است' }),
 });
 
 const securitySchema = z
@@ -107,7 +105,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
 
   const accountForm = useForm<AccountForm>({
     resolver: zodResolver(accountSchema),
-    defaultValues: { username: '', birthDate: undefined },
+    defaultValues: { username: '' },
   });
 
   const securityForm = useForm<SecurityForm>({
@@ -115,20 +113,14 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
 
-  const { pickerProps: birthDatePickerProps } = usePersianDatePickerController({
-    name: 'birthDate',
-    control: accountForm.control,
-    rules: { required: 'تاریخ تولد الزامی است' },
-  });
+  const [birthDate, setBirthDate] = useState<Date | null>(null);
 
   // Reset forms when profile data loads
   useEffect(() => {
     if (!profile) return;
     personalForm.reset({ firstName: profile.firstName, lastName: profile.lastName });
-    accountForm.reset({
-      username: profile.username ?? '',
-      birthDate: profile.birthDay ? new Date(profile.birthDay) : undefined,
-    });
+    accountForm.reset({ username: profile.username ?? '' });
+    setBirthDate(profile.birthDay ? new Date(profile.birthDay) : null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
@@ -156,8 +148,8 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     if (!hasUsername && data.username.trim()) {
       await setUsername.mutateAsync({ username: data.username.trim() });
     }
-    if (data.birthDate) {
-      await updateDateOfBirth.mutateAsync({ birthDay: data.birthDate.toISOString() });
+    if (birthDate) {
+      await updateDateOfBirth.mutateAsync({ birthDay: birthDate.toISOString() });
     }
   }
 
@@ -286,6 +278,17 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                         <CameraIcon className="h-3.5 w-3.5" />
                       )}
                     </button>
+                    {hasAvatar && (
+                      <button
+                        type="button"
+                        className="absolute bottom-0 start-0 flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-background shadow-sm cursor-pointer"
+                        title="حذف تصویر"
+                        disabled={isAvatarBusy}
+                        onClick={handleAvatarRemove}
+                      >
+                        <Trash2Icon className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-medium">
@@ -293,18 +296,6 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                     </p>
                     <p className="text-xs text-muted-foreground">{profile.mobile}</p>
                   </div>
-                  {hasAvatar && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-destructive hover:text-destructive"
-                      onClick={handleAvatarRemove}
-                      disabled={isAvatarBusy}
-                    >
-                      <Trash2Icon className="size-3.5" />
-                      حذف تصویر
-                    </Button>
-                  )}
                 </div>
 
                 {/* Tabs */}
@@ -393,15 +384,11 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                     <div className="space-y-2.5">
                       <Label>تاریخ تولد</Label>
                       <PersianDatePicker
-                        {...birthDatePickerProps}
+                        value={birthDate}
+                        onChange={(d) => setBirthDate(d as Date | null)}
                         placeholder="تاریخ تولد را انتخاب کنید"
                         popover={{ portal: false }}
                       />
-                      {accountForm.formState.errors.birthDate && (
-                        <p className="text-xs text-destructive">
-                          {accountForm.formState.errors.birthDate.message}
-                        </p>
-                      )}
                     </div>
                   </TabsContent>
 
