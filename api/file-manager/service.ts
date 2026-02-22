@@ -3,13 +3,13 @@ import { apiGet, apiPost, apiPostFormData, apiGetBlob, apiPostBlob } from '@/api
 // --- Enums ---
 
 export enum FileCategory {
-  Unknown = 0,
-  Avatar = 10,
-  MenuItem = 20,
-  LocalApp = 30,
-  MenuItemGroup = 40,
-  MenuItemCategory = 50,
-  KioskBackground = 60,
+  Unknown = 'Unknown',
+  Avatar = 'Avatar',
+  MenuItem = 'MenuItem',
+  LocalApp = 'LocalApp',
+  MenuItemGroup = 'MenuItemGroup',
+  MenuItemCategory = 'MenuItemCategory',
+  KioskBackground = 'KioskBackground',
 }
 
 export enum TransformationPreset {
@@ -89,28 +89,13 @@ export interface FileMetadataResponse {
   storageKey: string;
 }
 
-// --- Helpers ---
-
-const fileCategoryNameMap: Record<FileCategory, string> = {
-  [FileCategory.Unknown]: 'Unknown',
-  [FileCategory.Avatar]: 'Avatar',
-  [FileCategory.MenuItem]: 'MenuItem',
-  [FileCategory.LocalApp]: 'LocalApp',
-  [FileCategory.MenuItemGroup]: 'MenuItemGroup',
-  [FileCategory.MenuItemCategory]: 'MenuItemCategory',
-  [FileCategory.KioskBackground]: 'KioskBackground',
-};
-
 // --- Service ---
 
 const BASE = '/api/file/v1/files';
 
 export const fileManagerService = {
   startSession: (data: StartUploadSessionRequest) =>
-    apiPost<string>(`${BASE}/sessions`, {
-      ...data,
-      fileCategory: fileCategoryNameMap[data.fileCategory] ?? 'Unknown',
-    }),
+    apiPost<string>(`${BASE}/sessions`, data),
 
   uploadChunk: (data: UploadChunkRequest) => {
     const formData = new FormData();

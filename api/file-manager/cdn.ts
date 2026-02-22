@@ -1,4 +1,5 @@
-import { FileCategory, TransformationPreset, ResizeMode, CropMode } from './service';
+import type { FileCategory } from './service';
+import type { TransformationPreset, ResizeMode, CropMode } from './service';
 
 // --- Types ---
 
@@ -30,24 +31,10 @@ export interface CdnPresetUrlParams {
 
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL ?? '';
 
-const categoryPathMap: Record<FileCategory, string> = {
-  [FileCategory.Unknown]: 'unknown',
-  [FileCategory.Avatar]: 'avatar',
-  [FileCategory.MenuItem]: 'menuitem',
-  [FileCategory.LocalApp]: 'localapp',
-  [FileCategory.MenuItemGroup]: 'menuitemgroup',
-  [FileCategory.MenuItemCategory]: 'menuitemcategory',
-  [FileCategory.KioskBackground]: 'kioskbackground',
-};
-
-function getCategoryPath(category: FileCategory): string {
-  return categoryPathMap[category] ?? 'unknown';
-}
-
 // --- Builders ---
 
 export function buildCdnUrl({ category, fileId, slug, extension, options }: CdnUrlParams): string {
-  const base = `${GATEWAY_URL}/cdn/${getCategoryPath(category)}/${fileId}_${slug}.${extension}`;
+  const base = `${GATEWAY_URL}/cdn/${category.toLowerCase()}/${fileId}_${slug}.${extension}`;
 
   if (!options) return base;
 
@@ -64,5 +51,5 @@ export function buildCdnUrl({ category, fileId, slug, extension, options }: CdnU
 }
 
 export function buildCdnPresetUrl({ category, fileId, preset, extension = 'webp' }: CdnPresetUrlParams): string {
-  return `${GATEWAY_URL}/cdn/${getCategoryPath(category)}/${fileId}/${preset}.${extension}`;
+  return `${GATEWAY_URL}/cdn/${category.toLowerCase()}/${fileId}/${preset}.${extension}`;
 }
