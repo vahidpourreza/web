@@ -1,0 +1,43 @@
+/* ── Persian Date Picker (persian-date-kit) theme overrides ── */
+.dvx-pdp,
+.dvx-pdp__popover--portal {
+  --dvx-pdp-bg: var(--popover);
+  --dvx-pdp-fg: var(--popover-foreground);
+  --dvx-pdp-muted: var(--muted-foreground);
+  --dvx-pdp-border: var(--border);
+  --dvx-pdp-shadow: 0 8px 20px oklch(0 0 0 / 8%);
+  --dvx-pdp-accent: var(--primary);
+  --dvx-pdp-accentFg: var(--primary-foreground);
+  --dvx-pdp-ring: oklch(0.488 0.243 264.376 / 30%);
+  --dvx-pdp-dayHover: oklch(0.488 0.243 264.376 / 8%);
+  font-family: var(--font-iran-sans-fa-num), sans-serif;
+}
+
+.dark .dvx-pdp,
+.dark .dvx-pdp__popover--portal {
+  --dvx-pdp-shadow: 0 8px 20px oklch(0 0 0 / 35%);
+  --dvx-pdp-ring: oklch(0.42 0.18 266 / 35%);
+  --dvx-pdp-dayHover: oklch(0.42 0.18 266 / 12%);
+}
+
+/* Match border-radius to project design tokens */
+.dvx-pdp__input {
+  border-radius: var(--radius);
+}
+.dvx-pdp__button,
+.dvx-pdp__nav,
+.dvx-pdp__day {
+  border-radius: var(--radius);
+}
+.dvx-pdp__calendar {
+  border-radius: calc(var(--radius) + 8px);
+}
+.dvx-pdp__cell {
+  border-radius: calc(var(--radius) + 4px);
+}
+.dvx-pdp__timeStepperButton {
+  border-radius: calc(var(--radius) - 2px);
+}
+.dvx-pdp__timeStepperInput {
+  border-radius: var(--radius);
+}
