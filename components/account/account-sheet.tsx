@@ -40,8 +40,6 @@ import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -114,14 +112,14 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
 
-  const [birthDate, setBirthDate] = useState<Date | null>(null);
+  const [birthDate, setBirthDate] = useState('');
 
   // Reset forms when profile data loads
   useEffect(() => {
     if (!profile) return;
     personalForm.reset({ firstName: profile.firstName, lastName: profile.lastName });
     accountForm.reset({ username: profile.username ?? '' });
-    setBirthDate(profile.birthDay ? new Date(profile.birthDay) : null);
+    setBirthDate(profile.birthDay ? new Date(profile.birthDay).toLocaleDateString('fa-IR') : '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
@@ -149,8 +147,8 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     if (!hasUsername && data.username.trim()) {
       await setUsername.mutateAsync({ username: data.username.trim() });
     }
-    if (birthDate) {
-      await updateDateOfBirth.mutateAsync({ birthDay: birthDate.toISOString() });
+    if (birthDate.trim()) {
+      await updateDateOfBirth.mutateAsync({ birthDay: birthDate.trim() });
     }
   }
 
@@ -383,27 +381,13 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                     <Separator />
 
                     <div className="space-y-2.5">
-                      <Label>تاریخ تولد</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start font-normal"
-                          >
-                            {birthDate
-                              ? birthDate.toLocaleDateString('fa-IR')
-                              : 'تاریخ تولد را انتخاب کنید'}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={birthDate ?? undefined}
-                            captionLayout="dropdown"
-                            onSelect={(date) => setBirthDate(date ?? null)}
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <Label htmlFor="birthDate">تاریخ تولد</Label>
+                      <Input
+                        id="birthDate"
+                        value={birthDate}
+                        onChange={(e) => setBirthDate(e.target.value)}
+                        placeholder="مثلاً ۱۳۷۰/۰۱/۰۱"
+                      />
                     </div>
                   </TabsContent>
 
