@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
+  CalendarIcon,
   CameraIcon,
   EyeIcon,
   EyeOffIcon,
@@ -39,6 +40,8 @@ import { Button } from '@/components/ui/button';
 import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -112,14 +115,15 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
 
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState<Date | undefined>(undefined);
+  const [birthDateOpen, setBirthDateOpen] = useState(false);
 
   // Reset forms when profile data loads
   useEffect(() => {
     if (!profile) return;
     personalForm.reset({ firstName: profile.firstName, lastName: profile.lastName });
     accountForm.reset({ username: profile.username ?? '' });
-    setBirthDate(profile.birthDay ? new Date(profile.birthDay).toLocaleDateString('fa-IR') : '');
+    setBirthDate(profile.birthDay ? new Date(profile.birthDay) : undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
@@ -147,8 +151,14 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
     if (!hasUsername && data.username.trim()) {
       await setUsername.mutateAsync({ username: data.username.trim() });
     }
-    if (birthDate.trim()) {
-      await updateDateOfBirth.mutateAsync({ birthDay: birthDate.trim() });
+    if (birthDate) {
+      // Send as Jalali string e.g. "1378/11/06" — adjust when API contract is finalized
+      const jalali = birthDate.toLocaleDateString('fa-IR-u-nu-latn', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      await updateDateOfBirth.mutateAsync({ birthDay: jalali });
     }
   }
 
@@ -241,10 +251,7 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
             </div>
           </div>
         ) : isError ? (
-          <QueryErrorState
-            message={error?.message}
-            onRetry={() => refetch()}
-          />
+          <QueryErrorState message={error?.message} onRetry={() => refetch()} />
         ) : profile ? (
           <>
             {/* Scrollable area — dir=ltr forces scrollbar to right side */}
@@ -254,7 +261,12 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                 <div className="flex flex-col items-center gap-3">
                   <div className="relative">
                     <Avatar key={profile.avatarId ?? 'no-avatar'} className="h-20 w-20 text-lg">
-                      {avatarUrl && <AvatarImage src={avatarUrl} alt={`${profile.firstName} ${profile.lastName}`} />}
+                      {avatarUrl && (
+                        <AvatarImage
+                          src={avatarUrl}
+                          alt={`${profile.firstName} ${profile.lastName}`}
+                        />
+                      )}
                       <AvatarFallback className="text-lg">{initials}</AvatarFallback>
                     </Avatar>
                     <input
@@ -298,7 +310,12 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
                 </div>
 
                 {/* Tabs */}
-                <Tabs value={activeTab} onValueChange={setActiveTab} activationMode="manual" className="w-full">
+                <Tabs
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                  activationMode="manual"
+                  className="w-full"
+                >
                   <TabsList className="w-full">
                     <TabsTrigger value="personal" className="flex-1">
                       <UserIcon className="size-3.5" />
@@ -382,12 +399,36 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
 
                     <div className="space-y-2.5">
                       <Label htmlFor="birthDate">تاریخ تولد</Label>
-                      <Input
-                        id="birthDate"
-                        value={birthDate}
-                        onChange={(e) => setBirthDate(e.target.value)}
-                        placeholder="مثلاً ۱۳۷۰/۰۱/۰۱"
-                      />
+                      <Popover open={birthDateOpen} onOpenChange={setBirthDateOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            id="birthDate"
+                            className="w-full justify-start font-normal"
+                          >
+                            <CalendarIcon className="size-4 text-muted-foreground" />
+                            {birthDate
+                              ? birthDate.toLocaleDateString('fa-IR', {
+                                  day: '2-digit',
+                                  month: 'long',
+                                  year: 'numeric',
+                                })
+                              : 'انتخاب تاریخ'}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={birthDate}
+                            defaultMonth={birthDate}
+                            captionLayout="dropdown"
+                            onSelect={(date) => {
+                              setBirthDate(date);
+                              setBirthDateOpen(false);
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   </TabsContent>
 

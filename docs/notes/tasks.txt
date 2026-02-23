@@ -3,6 +3,3 @@
 
 - تعریف ساختار منو های جدید
 - دریافت تمامی منو های اپلیکشین
-
-
-- birthdate problem.should be converted
