@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { PersianDatePicker, PersianDateRangePicker } from '@/components/common/persian-datepicker';
-import type { PersianDateRange } from '@/components/common/persian-datepicker';
 
 function ErrorThrower(): never {
   throw new Error('خطایی در لود کردن صفحه تست پیش آمد');
@@ -12,13 +10,6 @@ function ErrorThrower(): never {
 
 export default function TestPage() {
   const [showError, setShowError] = useState(false);
-
-  // Date picker states
-  const [singleDate, setSingleDate] = useState<Date | null>(null);
-  const [dateWithTime, setDateWithTime] = useState<Date | null>(null);
-  const [dateRange, setDateRange] = useState<PersianDateRange>({ start: null, end: null });
-  const [multipleDates, setMultipleDates] = useState<Date[] | null>(null);
-  const [inlineDate, setInlineDate] = useState<Date | null>(new Date());
 
   if (showError) {
     return <ErrorThrower />;
@@ -81,102 +72,6 @@ export default function TestPage() {
           >
             Show Toast
           </Button>
-        </div>
-      </section>
-
-      {/* Date Picker tests */}
-      <section>
-        <h2 className="mb-4 text-lg font-bold">تست تقویم شمسی</h2>
-        <div className="space-y-8">
-          {/* 1. Simple date picker */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">انتخاب تاریخ</h3>
-            <PersianDatePicker
-              value={singleDate}
-              onChange={(d) => setSingleDate(d as Date | null)}
-              placeholder="تاریخ را انتخاب کنید"
-            />
-            {singleDate && (
-              <p className="text-xs text-muted-foreground">
-                مقدار: {singleDate.toLocaleDateString('fa-IR')}
-              </p>
-            )}
-          </div>
-
-          {/* 2. Date + Time picker */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">انتخاب تاریخ و ساعت</h3>
-            <PersianDatePicker
-              value={dateWithTime}
-              onChange={(d) => setDateWithTime(d as Date | null)}
-              placeholder="تاریخ و ساعت را انتخاب کنید"
-              timePicker={{ enabled: true, format: 'HH:mm' }}
-            />
-            {dateWithTime && (
-              <p className="text-xs text-muted-foreground">
-                مقدار: {dateWithTime.toLocaleDateString('fa-IR')} - {dateWithTime.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}
-              </p>
-            )}
-          </div>
-
-          {/* 3. Date range picker */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">انتخاب بازه تاریخ</h3>
-            <PersianDateRangePicker
-              value={dateRange}
-              onChange={setDateRange}
-              placeholderStart="از تاریخ"
-              placeholderEnd="تا تاریخ"
-            />
-            {dateRange.start && dateRange.end && (
-              <p className="text-xs text-muted-foreground">
-                از {dateRange.start.toLocaleDateString('fa-IR')} تا {dateRange.end.toLocaleDateString('fa-IR')}
-              </p>
-            )}
-          </div>
-
-          {/* 4. Multiple date picker */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">انتخاب چند تاریخ</h3>
-            <PersianDatePicker
-              value={multipleDates}
-              onChange={(d) => setMultipleDates(d as Date[])}
-              placeholder="تاریخ‌ها را انتخاب کنید"
-              multiple
-              maxSelections={5}
-            />
-            {multipleDates && multipleDates.length > 0 && (
-              <p className="text-xs text-muted-foreground">
-                {multipleDates.length} تاریخ انتخاب شده
-              </p>
-            )}
-          </div>
-
-          {/* 5. Date range picker (single input) */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">انتخاب بازه تاریخ (تک ورودی)</h3>
-            <PersianDateRangePicker
-              value={dateRange}
-              onChange={setDateRange}
-              inputVariant="single"
-              placeholder="بازه تاریخ را انتخاب کنید"
-            />
-          </div>
-
-          {/* 6. Inline calendar */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">تقویم درون‌خطی</h3>
-            <PersianDatePicker
-              value={inlineDate}
-              onChange={(d) => setInlineDate(d as Date | null)}
-              mode="inline"
-            />
-            {inlineDate && (
-              <p className="text-xs text-muted-foreground">
-                مقدار: {inlineDate.toLocaleDateString('fa-IR')}
-              </p>
-            )}
-          </div>
         </div>
       </section>
     </div>

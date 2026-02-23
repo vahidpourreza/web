@@ -40,7 +40,8 @@ import { QueryErrorState } from '@/components/query-error-state';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { PersianDatePicker } from '@/components/common/persian-datepicker';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -383,12 +384,26 @@ export function AccountSheet({ open, onOpenChange }: AccountSheetProps) {
 
                     <div className="space-y-2.5">
                       <Label>تاریخ تولد</Label>
-                      <PersianDatePicker
-                        value={birthDate}
-                        onChange={(d) => setBirthDate(d as Date | null)}
-                        placeholder="تاریخ تولد را انتخاب کنید"
-                        popover={{ portal: false }}
-                      />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start font-normal"
+                          >
+                            {birthDate
+                              ? birthDate.toLocaleDateString('fa-IR')
+                              : 'تاریخ تولد را انتخاب کنید'}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={birthDate ?? undefined}
+                            captionLayout="dropdown"
+                            onSelect={(date) => setBirthDate(date ?? null)}
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   </TabsContent>
 
