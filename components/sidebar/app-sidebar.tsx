@@ -9,9 +9,14 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Coffee } from 'lucide-react';
 import { useNavigationTreeByClient } from '@/api/access/navigation/hooks';
 import type { ClientAppNavigationResponse } from '@/api/access/navigation/service';
@@ -62,7 +67,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        {isLoading ? null : <NavMain items={navItems} />}
+        {isLoading ? (
+          <SidebarGroup>
+            <SidebarMenu>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <SidebarMenuItem key={i}>
+                  <SidebarMenuButton>
+                    <Skeleton className="size-4 rounded-md" />
+                    <Skeleton className="h-4 flex-1" />
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        ) : (
+          <NavMain items={navItems} />
+        )}
         {/* <NavProjects projects={data.projects} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>

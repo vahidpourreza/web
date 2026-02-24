@@ -13,7 +13,7 @@ export function useNavigationTreeByClient(
   return useQuery({
     queryKey: navigationKeys.byClient(data.clientApp),
     queryFn: () => unwrapApiResponse(navigationService.getTreeByClient(data)),
-    staleTime: 2 * 60 * 1000,
+    staleTime: Infinity,
     enabled,
   });
 }
