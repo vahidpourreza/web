@@ -35,7 +35,7 @@ function mapNavigationToNavItems(
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((nav) => {
       const Icon = getLucideIcon(nav.icon);
-      const children = mapNavigationToNavItems(nav.navigations);
+      const children = nav.type === 'Menu' ? mapNavigationToNavItems(nav.navigations) : [];
 
       return {
         title: nav.title,
