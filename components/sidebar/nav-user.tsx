@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AccountSheet } from '@/components/account/account-sheet';
 import { useProfile } from '@/api/access/profile';
@@ -49,21 +49,14 @@ export function NavUser() {
 
     qc.clear();
 
-    // 1. Clear HttpOnly session cookies via same-origin fetch (NOT signOut()
-    //    which triggers SessionProvider events that cause HTTP 499 on the IDP).
-    // 2. Then redirect to IDP end-session with id_token_hint.
-    //    The IDP's own frontchannel logout runs in a cross-origin iframe,
-    //    so browsers block its cookie deletion — we must do it ourselves first.
     const params = new URLSearchParams({
       post_logout_redirect_uri: appUrl ?? '',
       ...(idToken && { id_token_hint: idToken }),
     });
 
-    fetch('/api/auth/frontchannel-logout', { method: 'GET' })
-      .catch(() => {})
-      .finally(() => {
-        window.location.href = `${issuer}/connect/endsession?${params.toString()}`;
-      });
+    signOut({
+      redirectTo: `${issuer}/connect/endsession?${params.toString()}`,
+    });
   }
 
   if (isLoading) {

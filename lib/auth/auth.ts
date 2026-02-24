@@ -99,6 +99,15 @@ const config: NextAuthConfig = {
       };
       return session;
     },
+
+    async redirect({ url, baseUrl }) {
+      // Allow redirects to the IDP (for RP-initiated logout)
+      if (url.startsWith(env.auth.issuer)) return url;
+      // Default Auth.js behavior: allow same-origin, otherwise fallback to base
+      if (url.startsWith(baseUrl)) return url;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      return baseUrl;
+    },
   },
 };
 
