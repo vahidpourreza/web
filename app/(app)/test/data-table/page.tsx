@@ -1,7 +1,5 @@
 import { DataTable } from "@/components/data-table/data-table"
 import { outlineColumns, type OutlineRow } from "@/components/data-table/outline-columns"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const mockData: OutlineRow[] = [
   { id: "1",  header: "صفحه جلد",                              sectionType: "cover-page",         status: "in-process", target: 18, limit: 5,  reviewer: "علی رضایی" },
@@ -38,41 +36,8 @@ const mockData: OutlineRow[] = [
 
 export default function DataTablePage() {
   return (
-    <div className="p-6 space-y-4">
-      <Tabs defaultValue="outline">
-        <TabsList>
-          <TabsTrigger value="outline">طرح کلی</TabsTrigger>
-          <TabsTrigger value="past-performance" className="gap-1.5">
-            عملکرد گذشته
-            <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
-              3
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel" className="gap-1.5">
-            پرسنل کلیدی
-            <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
-              2
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">اسناد تمرکز</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="outline" className="mt-4">
-          <DataTable columns={outlineColumns} data={mockData} />
-        </TabsContent>
-
-        <TabsContent value="past-performance" className="mt-4">
-          <p className="text-muted-foreground text-sm">محتوای عملکرد گذشته اینجا قرار می‌گیرد.</p>
-        </TabsContent>
-
-        <TabsContent value="key-personnel" className="mt-4">
-          <p className="text-muted-foreground text-sm">محتوای پرسنل کلیدی اینجا قرار می‌گیرد.</p>
-        </TabsContent>
-
-        <TabsContent value="focus-documents" className="mt-4">
-          <p className="text-muted-foreground text-sm">محتوای اسناد تمرکز اینجا قرار می‌گیرد.</p>
-        </TabsContent>
-      </Tabs>
+    <div className="p-6">
+      <DataTable columns={outlineColumns} data={mockData} />
     </div>
   )
 }
