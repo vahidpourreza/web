@@ -35,6 +35,7 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import {
+  AlertCircleIcon,
   ArrowDownIcon,
   ArrowUpDownIcon,
   ArrowUpIcon,
@@ -42,6 +43,7 @@ import {
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
+  Loader2Icon,
   SlidersHorizontalIcon,
   PlusIcon,
 } from "lucide-react"
@@ -82,6 +84,8 @@ interface DataTableProps<TData extends { id: string }> {
   onPaginationChange?: OnChangeFn<PaginationState>
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
+  isFetching?: boolean
+  isError?: boolean
 }
 
 function SortableRow<TData extends { id: string }>({
@@ -124,6 +128,8 @@ export function DataTable<TData extends { id: string }>({
   onPaginationChange,
   sorting: controlledSorting,
   onSortingChange,
+  isFetching = false,
+  isError = false,
 }: DataTableProps<TData>) {
   const isServerSide = pageCount !== undefined
 
@@ -243,7 +249,20 @@ export function DataTable<TData extends { id: string }>({
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border">
+      <div className="relative rounded-lg border">
+        {isFetching && !isError && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/60 backdrop-blur-[1px]">
+            <Loader2Icon className="size-5 animate-spin text-muted-foreground" />
+          </div>
+        )}
+        {isError && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/80">
+            <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <AlertCircleIcon className="size-4 shrink-0" />
+              خطا در بارگذاری داده‌ها
+            </span>
+          </div>
+        )}
         <Table>
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -299,9 +318,16 @@ export function DataTable<TData extends { id: string }>({
                     <TableRow>
                       <TableCell
                         colSpan={activeColumns.length}
-                        className="h-24 text-center text-muted-foreground"
+                        className="h-24 text-center"
                       >
-                        نتیجه‌ای یافت نشد.
+                        {isError ? (
+                          <span className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                            <AlertCircleIcon className="size-4 shrink-0" />
+                            خطا در بارگذاری داده‌ها
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">نتیجه‌ای یافت نشد.</span>
+                        )}
                       </TableCell>
                     </TableRow>
                   )}

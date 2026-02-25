@@ -196,7 +196,7 @@ function UsersContent() {
     roleType: roleType || undefined,
   }
 
-  const { data, isLoading } = usePagedUsers(queryParams)
+  const { data, isLoading, isFetching, isError } = usePagedUsers(queryParams)
   const pageCount = data ? Math.ceil(data.totalCount / pageSize) : 0
 
   return (
@@ -295,6 +295,8 @@ function UsersContent() {
           columns={userColumns}
           data={data?.queryResult ?? []}
           pageCount={pageCount}
+          isFetching={isFetching}
+          isError={isError}
           pagination={pagination}
           onPaginationChange={(updater) => {
             const next = typeof updater === "function" ? updater(pagination) : updater

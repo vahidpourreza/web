@@ -11,15 +11,6 @@
 
 - اضافه کردن api تمامی سرویس ها
 
--sort
 -filter
 - delete modal or...
 - bulk operaion design.
--loaders - spiner -skeltion - erorrs.
--
-
-
-
-
-so now lets work on things like sort , filters.
-also we need url params for this things?
