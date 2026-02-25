@@ -4,6 +4,8 @@ import * as React from "react"
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type OnChangeFn,
+  type PaginationState,
   type Row,
   type SortingState,
   type VisibilityState,
@@ -71,6 +73,12 @@ interface DataTableProps<TData extends { id: string }> {
   data: TData[]
   onAddRow?: () => void
   draggable?: boolean
+  // Server-side mode — provide these to enable manual pagination/sorting
+  pageCount?: number
+  pagination?: PaginationState
+  onPaginationChange?: OnChangeFn<PaginationState>
+  sorting?: SortingState
+  onSortingChange?: OnChangeFn<SortingState>
 }
 
 function SortableRow<TData extends { id: string }>({
@@ -108,12 +116,24 @@ export function DataTable<TData extends { id: string }>({
   data: initialData,
   onAddRow,
   draggable = false,
+  pageCount,
+  pagination: controlledPagination,
+  onPaginationChange,
+  sorting: controlledSorting,
+  onSortingChange,
 }: DataTableProps<TData>) {
+  const isServerSide = pageCount !== undefined
+
   const [data, setData] = React.useState(initialData)
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [internalSorting, setInternalSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+
+  // Keep client-side data in sync when prop changes (client mode only)
+  React.useEffect(() => {
+    if (!isServerSide) setData(initialData)
+  }, [initialData, isServerSide])
 
   const activeColumns = React.useMemo(
     () => draggable ? columns : columns.filter((col) => (col as { id?: string }).id !== "drag"),
@@ -121,26 +141,35 @@ export function DataTable<TData extends { id: string }>({
   )
 
   const table = useReactTable({
-    data,
+    data: isServerSide ? initialData : data,
     columns: activeColumns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    ...(isServerSide
+      ? {
+          manualPagination: true,
+          manualSorting: true,
+          pageCount,
+          onPaginationChange,
+          onSortingChange,
+        }
+      : {
+          getPaginationRowModel: getPaginationRowModel(),
+          getSortedRowModel: getSortedRowModel(),
+          getFilteredRowModel: getFilteredRowModel(),
+          onSortingChange: setInternalSorting,
+        }),
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     getRowId: (row) => row.id,
     state: {
-      sorting,
+      sorting: isServerSide ? (controlledSorting ?? []) : internalSorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      ...(isServerSide && controlledPagination ? { pagination: controlledPagination } : {}),
     },
-    initialState: {
-      pagination: { pageSize: 10 },
-    },
+    ...(!isServerSide ? { initialState: { pagination: { pageSize: 10 } } } : {}),
   })
 
   const sensors = useSensors(
@@ -169,7 +198,9 @@ export function DataTable<TData extends { id: string }>({
   }
 
   const selectedCount = Object.keys(rowSelection).length
-  const totalRows = table.getFilteredRowModel().rows.length
+  const totalRows = isServerSide
+    ? (pageCount ?? 0) * (controlledPagination?.pageSize ?? 10)
+    : table.getFilteredRowModel().rows.length
 
   const hidableColumns = table.getAllColumns().filter((col) => col.getCanHide())
 

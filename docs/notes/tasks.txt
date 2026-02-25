@@ -9,3 +9,12 @@
 - اضافه کردن api تمامی سرویس ها
 -paged list ها
 - ساخت صفحه داشبورد
+
+-sort
+-filter
+-extra btns icon
+- delete modal or...
+- bulk operaion design.
+-serverside page.
+-loaders - spiner -skeltion - erorrs.
+-url params for queries.

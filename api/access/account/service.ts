@@ -1,4 +1,5 @@
 import { apiGet, apiPost, apiPut } from '@/api/client';
+import type { PagedData, PageQuery } from '@/api/types';
 
 // --- Requests ---
 
@@ -66,6 +67,14 @@ export interface GetAllUsersCompactRequest {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GetAllSuperAdminsCompactRequest {}
+
+export interface GetPagedUsersRequest extends PageQuery {
+  fullName?: string;
+  mobile?: string;
+  statusType?: string;
+  roleType?: string;
+  brokerId?: string;
+}
 
 // --- Responses ---
 
@@ -236,4 +245,7 @@ export const accountService = {
 
   getAllSuperAdminsCompact: (data?: GetAllSuperAdminsCompactRequest) =>
     apiGet<SuperAdminCompactResponse[]>(`${BASE}/GetAllSuperAdminsCompact`, data),
+
+  getPagedUsers: (data?: GetPagedUsersRequest) =>
+    apiGet<PagedData<UserResponse>>(`${BASE}/GetPaged`, data),
 };

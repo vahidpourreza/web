@@ -5,6 +5,7 @@ export const accountKeys = {
   byTenant: (tenantId: string) => [...accountKeys.lists(), 'tenant', tenantId] as const,
   compact: () => [...accountKeys.lists(), 'compact'] as const,
   superAdminsCompact: () => [...accountKeys.lists(), 'superAdminsCompact'] as const,
+  paged: (params: object) => [...accountKeys.lists(), 'paged', params] as const,
   details: () => [...accountKeys.all, 'detail'] as const,
   detail: (id: string) => [...accountKeys.details(), id] as const,
   profile: (tenantUserId: string) => [...accountKeys.all, 'profile', tenantUserId] as const,

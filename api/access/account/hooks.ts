@@ -16,6 +16,7 @@ import type {
   GetUserByIdRequest,
   GetUserFullProfileRequest,
   GetUserTenantProfileRequest,
+  GetPagedUsersRequest,
 } from './service';
 
 export function useCurrentTenantUsers({ enabled = true }: { enabled?: boolean } = {}) {
@@ -110,6 +111,18 @@ export function useSuperAdminsCompact({ enabled = true }: { enabled?: boolean } 
     queryKey: accountKeys.superAdminsCompact(),
     queryFn: () => unwrapApiResponse(accountService.getAllSuperAdminsCompact()),
     staleTime: 2 * 60 * 1000,
+    enabled,
+  });
+}
+
+export function usePagedUsers(
+  params: GetPagedUsersRequest = {},
+  { enabled = true }: { enabled?: boolean } = {},
+) {
+  return useQuery({
+    queryKey: accountKeys.paged(params),
+    queryFn: () => unwrapApiResponse(accountService.getPagedUsers(params)),
+    staleTime: 0,
     enabled,
   });
 }

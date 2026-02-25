@@ -39,6 +39,10 @@ apiClient.interceptors.response.use(
       }
     }
 
+    if (error.response?.status === 403) {
+      toast.error('شما دسترسی لازم برای انجام این عملیات را ندارید');
+    }
+
     if (error.response?.status === 500) {
       const data = error.response.data as { id?: string } | undefined;
       const traceId = data?.id;
