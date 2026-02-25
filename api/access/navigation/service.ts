@@ -25,6 +25,11 @@ export interface ClientAppNavigationResponse {
   type: string;
   accessScope: string;
   isActive: boolean;
+  icon: string | null;
+  route: string | null;
+  badge: string | null;
+  sortOrder: number;
+  isVisible: boolean;
   requiredPermissions: string[] | null;
   navigations: ClientAppNavigationResponse[] | null;
 }

@@ -1,9 +1,18 @@
 'use client';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoaderIcon } from 'lucide-react';
+
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,8 +47,7 @@ export default function LoginPage() {
             height: '200%',
             top: '-50%',
             left: '-50%',
-            background:
-              'radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 70%)',
+            background: 'radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 70%)',
           }}
         />
       </div>
@@ -74,13 +82,18 @@ export default function LoginPage() {
             height: '200%',
             top: '-50%',
             left: '-50%',
-            background:
-              'radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 50%)',
+            background: 'radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 50%)',
           }}
         />
       </div>
-      <div className="absolute inset-0 flex items-center justify-center" style={{ filter: 'blur(0.5px)' }}>
-        <LoaderIcon className="size-10 animate-spin text-foreground/15 drop-shadow-lg" strokeWidth={1.5} />
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ filter: 'blur(0.5px)' }}
+      >
+        <LoaderIcon
+          className="size-10 animate-spin text-foreground/15 drop-shadow-lg"
+          strokeWidth={1.5}
+        />
       </div>
       <style>{`
         @keyframes pulse1 {

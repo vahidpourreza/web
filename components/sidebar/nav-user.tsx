@@ -42,21 +42,21 @@ export function NavUser() {
   const [accountOpen, setAccountOpen] = useState(false);
   const qc = useQueryClient();
 
-  async function handleLogout() {
+  function handleLogout() {
     const issuer = process.env.NEXT_PUBLIC_AUTH_ISSUER;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
     const idToken = session?.idToken;
 
-    // First clear the NextAuth session without redirecting
-    await signOut({ redirect: false });
     qc.clear();
 
-    // Then redirect to IDP end-session to kill the IDP session too
     const params = new URLSearchParams({
       post_logout_redirect_uri: appUrl ?? '',
       ...(idToken && { id_token_hint: idToken }),
     });
-    window.location.href = `${issuer}/connect/endsession?${params.toString()}`;
+
+    signOut({
+      redirectTo: `${issuer}/connect/endsession?${params.toString()}`,
+    });
   }
 
   if (isLoading) {
