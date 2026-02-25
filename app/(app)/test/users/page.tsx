@@ -2,12 +2,45 @@
 
 import * as React from "react"
 import { type ColumnDef, type PaginationState, type SortingState } from "@tanstack/react-table"
+import { EyeIcon, MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
 import { DataTable } from "@/components/data-table/data-table"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { usePagedUsers } from "@/api/access/account/hooks"
 import type { UserResponse } from "@/api/access/account/service"
 
 const userColumns: ColumnDef<UserResponse>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    size: 40,
+  },
   {
     accessorKey: "mobile",
     header: "موبایل",
@@ -56,6 +89,37 @@ const userColumns: ColumnDef<UserResponse>[] = [
     accessorKey: "isRoot",
     header: "روت",
     cell: ({ row }) => row.original.isRoot ? <span className="text-xs font-medium text-destructive">بله</span> : null,
+  },
+  {
+    id: "actions",
+    header: () => null,
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon-sm" className="text-muted-foreground">
+            <MoreHorizontalIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem>
+            <EyeIcon />
+            مشاهده
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <PencilIcon />
+            ویرایش
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive">
+            <Trash2Icon />
+            حذف
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    size: 40,
   },
 ]
 

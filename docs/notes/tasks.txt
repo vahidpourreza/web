@@ -5,16 +5,21 @@
 - بررسی مشکلات بوجود آمده برای پروژه قبلی با اضافه شدن منو های جدید
 منو های کاربر دسترسی های مربوط به نرم افزار دیگر را هم فچ میکند.
 
-- ساخت صفحات
-- اضافه کردن api تمامی سرویس ها
--paged list ها
 - ساخت صفحه داشبورد
+
+- ساخت صفحات یک سری برای کپی
+
+- اضافه کردن api تمامی سرویس ها
 
 -sort
 -filter
--extra btns icon
 - delete modal or...
 - bulk operaion design.
 -serverside page.
 -loaders - spiner -skeltion - erorrs.
 -url params for queries.
+
+
+
+
+so now lets work on things like sort , filter,
