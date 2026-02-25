@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
-import { Noto_Sans_Arabic, Geist_Mono } from "next/font/google";
-import { DirectionProvider } from "@/components/ui/direction";
-import "./globals.css";
-
-const fontSans = Noto_Sans_Arabic({
-  subsets: ["arabic"],
-  variable: "--font-sans",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from 'next';
+import { AuthProvider } from '@/providers/auth-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ThemeProvider } from '@/components/theme/theme-provider';
+import { DirectionProvider } from '@/components/ui/direction';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/sonner';
+import { OfflineBanner } from '@/components/offline-banner';
+import { iranSansFaNum } from '@/lib/fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "ساخت اپلیکیشن Next",
-  description: "ساخته شده با create next app",
+  title: {
+    default: 'Smart Cup',
+    template: '%s | Smart Cup',
+  },
+  description: 'Cafe & restaurant management system',
 };
 
 export default function RootLayout({
@@ -24,12 +23,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={fontSans.variable}>
-      <body
-        className={`${geistMono.variable} antialiased`}
-      >
-        <DirectionProvider dir="rtl">
-          {children}
+    <html lang="fa" dir="rtl" className={iranSansFaNum.variable} suppressHydrationWarning>
+      <body className="antialiased">
+        <DirectionProvider direction="rtl" dir="rtl">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AuthProvider>
+              <QueryProvider>
+                <TooltipProvider>{children}</TooltipProvider>
+                <OfflineBanner />
+                <Toaster position="bottom-center" dir="rtl" />
+              </QueryProvider>
+            </AuthProvider>
+          </ThemeProvider>
         </DirectionProvider>
       </body>
     </html>

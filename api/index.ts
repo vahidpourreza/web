@@ -1,0 +1,16 @@
+export { accessService } from './access/access';
+export { accessGroupService } from './access/access-group';
+export { accountService } from './access/account';
+export { adminAccessService } from './access/admin-access';
+export { backdoorAccessService } from './access/backdoor-access';
+export { centerService } from './access/center';
+export { invitationService } from './access/invitation';
+export { licenseService } from './access/license';
+export { navigationService } from './access/navigation';
+export { otpService } from './access/otp';
+export { profileService } from './access/profile';
+export { registrationService } from './access/registration';
+export { smsService } from './access/sms';
+export { tenantService } from './access/tenant';
+export { workspaceService } from './access/workspace';
+export { fileManagerService } from './file-manager';
